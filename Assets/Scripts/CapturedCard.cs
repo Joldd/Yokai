@@ -13,6 +13,11 @@ public class CapturedCard : MonoBehaviour
 
 	private void Start()
 	{
+		if (Board.Instance.isPlayer1Turn)
+			GetComponent<Button>().interactable = player == 1 ? true : false;
+		else
+			GetComponent<Button>().interactable = player == 1 ? false : true;
+
 		Board.Instance.changeTurn.AddListener(() =>
 		{
 			if (Board.Instance.isPlayer1Turn)
@@ -22,11 +27,11 @@ public class CapturedCard : MonoBehaviour
 		});
 	}
 
-	public void SetCapturedPiece(GameObject prefab, int player)
+	public void SetCapturedPiece(int p, int player, Sprite sprite)
 	{
-        this.prefab = prefab;
-        this.player = player;
-        image.sprite = prefab.GetComponent<SpriteRenderer>().sprite;
+		this.prefab = GameManager.Instance.gamePieces[p].piecePrefab;
+		this.player = player;
+        image.sprite = sprite;
 	}
 
     public void OnClickPiece()

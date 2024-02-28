@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerTurn;
     [SerializeField] private TextMeshProUGUI _victoryText;
     [SerializeField] private GameObject _victoryPanel;
+    [SerializeField] public Transform[] capturedPanel;
 
     public static UIManager Instance { get; private set; }
 
@@ -27,7 +28,6 @@ public class UIManager : MonoBehaviour
     {
         _victoryPanel.SetActive(false);
     }
-    [SerializeField] private Transform[] cardCapture;
 
     public void UpdatePlayerTurn()
     {

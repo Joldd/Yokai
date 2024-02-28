@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] Tilemap tileMap;
 
-    [SerializeField] private GamePiece[] gamePieces;
+    [SerializeField] public GamePiece[] gamePieces;
 
     private void Awake()
     {

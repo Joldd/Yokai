@@ -12,7 +12,10 @@ public class Selectable : MonoBehaviour
     public Vector3 _direction;
     public float _speed = 3f;
 
-    public virtual void OnMouseDown()
+    [SerializeField] private GameObject capturedPrefab;
+    [SerializeField] private int cardType;
+
+	public virtual void OnMouseDown()
     {
         if (tag == "Player01" && !Board.Instance.isPlayer1Turn) return;
 
@@ -85,10 +88,14 @@ public class Selectable : MonoBehaviour
                         if (cardOnTile.TryGetComponent<Koropokkuru>(out Koropokkuru card)){
                             UIManager.Instance.Victory(1);
                         }
+                        int player = tag == "Player01" ? 0 : 1;
+                        Transform parent = UIManager.Instance.capturedPanel[player];
+                        GameObject go = Instantiate(capturedPrefab, parent);
+                        go.GetComponent<CapturedCard>().SetCapturedPiece(cardOnTile.cardType, player + 1, cardOnTile.GetComponent<SpriteRenderer>().sprite);
                         Destroy(cardOnTile.gameObject);
                     }
                 }
-                Board.Instance.getCustomTile(cellPos).cardOnTile = this;             
+                Board.Instance.getCustomTile(cellPos).cardOnTile = this;
             }
         }
     }
@@ -100,7 +107,7 @@ public class Selectable : MonoBehaviour
 
     public virtual void HideDeplacements()
     {
-        
+
     }
 
     public virtual Vector3Int cellUp()
