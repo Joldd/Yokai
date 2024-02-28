@@ -9,6 +9,10 @@ public class Selectable : MonoBehaviour
 
     public virtual void OnMouseDown()
     {
+        if (tag == "Player01" && !Board.Instance.isPlayer1Turn) return;
+
+        if (tag == "Player02" && Board.Instance.isPlayer1Turn) return;
+
         if (Board.Instance.currentPiece != null)
         {
             Board.Instance.currentPiece.HideDeplacements();
