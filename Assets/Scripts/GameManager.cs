@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] Tilemap tileMap;
 
+    [SerializeField] private GamePiece[] gamePieces;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -21,8 +23,39 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Update()
+	private void Start()
+	{
+		for (int i = 0; i < 2; i++)
+		{
+            for (int j = 0; j < 4; j++)
+            {
+                GamePiece gp = gamePieces[j];
+
+                GameObject go = Instantiate(gp.piecePrefab);
+                if (i == 0)
+                {
+                    go.transform.tag = "Player01";
+                    go.transform.position = tileMap.GetCellCenterWorld(gp.pieceCoord);
+                }
+                else
+                {
+                    go.transform.tag = "Player02";
+                    go.transform.position = tileMap.GetCellCenterWorld(new Vector3Int(2, 3, 0) - gp.pieceCoord);
+                    go.transform.eulerAngles = new Vector3(0, 0, 180);
+                }
+            }
+        }
+	}
+
+	private void Update()
     {
 
     }
+}
+
+[System.Serializable]
+public class GamePiece
+{
+    public GameObject piecePrefab;
+    public Vector3Int pieceCoord;
 }

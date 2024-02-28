@@ -44,3 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45635ce25bfdf9d4b8cc46322196b3b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileMap: {fileID: 0}
+  gamePieces:
+  - piecePrefab: {fileID: 3656327315072551848, guid: 5a310569214737d43b23c4179a6d82e2, type: 3}
+    pieceCoord: {x: 0, y: 0, z: 0}
+  - piecePrefab: {fileID: 3656327315072551848, guid: 5b38c8b6780abf34fa793604fb29589a, type: 3}
+    pieceCoord: {x: 1, y: 0, z: 0}
+  - piecePrefab: {fileID: 3656327315072551848, guid: 2d421b03997b67842abd67d4f9201e67, type: 3}
+    pieceCoord: {x: 2, y: 0, z: 0}
+  - piecePrefab: {fileID: 3656327315072551848, guid: 1e600a24d9d7a1643a4e6ce67f252d43, type: 3}
+    pieceCoord: {x: 1, y: 1, z: 0}
