@@ -149,7 +149,6 @@ GameObject:
   - component: {fileID: 646725206242203464}
   - component: {fileID: 5393625790886982947}
   - component: {fileID: 4648071272326326973}
-  - component: {fileID: 1109293695701397855}
   - component: {fileID: 7041027008505626315}
   m_Layer: 7
   m_Name: Board
@@ -736,42 +735,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!19719996 &1109293695701397855
-TilemapCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9058953961689487331}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
-  m_UseDelaunayMesh: 0
 --- !u!114 &7041027008505626315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,3 +750,5 @@ MonoBehaviour:
   tileMap: {fileID: 0}
   currentPiece: {fileID: 0}
   _camera: {fileID: 6738504701169800814}
+  isPlayer1Turn: 1
+  uiManager: {fileID: 0}

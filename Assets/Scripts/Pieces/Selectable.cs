@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Selectable : MonoBehaviour
 {
     public Vector3Int cellPos;
     public List<Vector3Int> movablePos = new List<Vector3Int>();
+    public bool isMoving;
+    public Vector3 _target;
+    public Vector3 _direction;
+    public float _speed = 3f;
 
     public virtual void OnMouseDown()
     {
@@ -33,7 +38,29 @@ public class Selectable : MonoBehaviour
 
     public virtual void MoveTo(Vector3Int pos)
     {
-        transform.position = Board.Instance.tileMap.GetCellCenterWorld(pos);
+        isMoving = true;
+        _target = Board.Instance.tileMap.GetCellCenterWorld(pos);
+        _direction = _target - transform.position;
+    }
+
+    private void Update()
+    {
+        if (isMoving)
+        {
+            if (tag == "Player01")
+            {
+                transform.Translate(_speed * _direction * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(-_speed * _direction * Time.deltaTime);
+            }
+            if (Vector3.Distance(transform.position, _target) <= 0.1f)
+            {
+                transform.position = _target;
+                isMoving = false;
+            }
+        }
     }
 
     public virtual void ShowDeplacements()
