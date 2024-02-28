@@ -52,7 +52,8 @@ public class Board : MonoBehaviour
 	{
         if (tileMap.GetTile(pos) is CustomTile)
             return (CustomTile)tileMap.GetTile(pos);
-
+        if(tileMap.GetTile(pos) is Tile)
+            Debug.Log("normal tile");
         return null;
     }
 
