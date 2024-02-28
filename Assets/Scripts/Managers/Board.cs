@@ -83,7 +83,7 @@ public class Board : MonoBehaviour
    //     }
 
         if (currentPiece != null)
-        {
+        {      
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("click 2 " + currentPiece.movablePos.Count);

@@ -10,10 +10,10 @@ public class Tanuki : Selectable
         base.ShowDeplacements();
 
         //Add possibles movements
-        movablePos.Add(cellUp());
-        movablePos.Add(cellDown());
-        movablePos.Add(cellRight());
-        movablePos.Add(cellLeft());
+        addMovablePos(cellUp());
+        addMovablePos(cellDown());
+        addMovablePos(cellRight());
+        addMovablePos(cellLeft());
 
         //Red tiles
         foreach (Vector3Int mov in movablePos)

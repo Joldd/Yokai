@@ -23,26 +23,26 @@ public class Kodama : Selectable
         //Add possibles movements
         if (tag == "Player01")
         {
-            movablePos.Add(cellUp());
+            addMovablePos(cellUp());
             if (isSamourai)
             {
-                movablePos.Add(cellUpLeft());
-                movablePos.Add(cellUpRight());
-                movablePos.Add(cellLeft());
-                movablePos.Add(cellRight());
-                movablePos.Add(cellDown());
+                addMovablePos(cellUpLeft());
+                addMovablePos(cellUpRight());
+                addMovablePos(cellLeft());
+                addMovablePos(cellRight());
+                addMovablePos(cellDown());
             }
         }
         else
         {
-            movablePos.Add(cellDown());
+            addMovablePos(cellDown());
             if (isSamourai)
             {
-                movablePos.Add(cellDownLeft());
-                movablePos.Add(cellDownRight());
-                movablePos.Add(cellLeft());
-                movablePos.Add(cellRight());
-                movablePos.Add(cellUp());
+                addMovablePos(cellDownLeft());
+                addMovablePos(cellDownRight());
+                addMovablePos(cellLeft());
+                addMovablePos(cellRight());
+                addMovablePos(cellUp());
             }
         }
 

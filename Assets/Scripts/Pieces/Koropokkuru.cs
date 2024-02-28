@@ -10,14 +10,14 @@ public class Koropokkuru : Selectable
         base.ShowDeplacements();
 
         //Add possibles movements
-        movablePos.Add(cellUp());
-        movablePos.Add(cellDown());
-        movablePos.Add(cellRight());
-        movablePos.Add(cellLeft());
-        movablePos.Add(cellUpLeft());
-        movablePos.Add(cellUpRight());
-        movablePos.Add(cellDownLeft());
-        movablePos.Add(cellDownRight());
+        addMovablePos(cellUp());
+        addMovablePos(cellDown());
+        addMovablePos(cellRight());
+        addMovablePos(cellLeft());
+        addMovablePos(cellUpLeft());
+        addMovablePos(cellUpRight());
+        addMovablePos(cellDownLeft());
+        addMovablePos(cellDownRight());
 
         //Red tiles
         foreach (Vector3Int mov in movablePos)
