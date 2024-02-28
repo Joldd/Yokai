@@ -38,11 +38,23 @@ public class Selectable : MonoBehaviour
 
     public void addMovablePos(Vector3Int pos)
     {
-        if (Board.Instance.getCustomTile(pos) != null) movablePos.Add(pos);
+        CustomTile customTile = Board.Instance.getCustomTile(pos);
+        if (customTile != null)
+        {
+            if (customTile.cardOnTile != CardOnTile.PLAYER02 && tag == "Player02")
+            {
+                movablePos.Add(pos);
+            }
+            if (customTile.cardOnTile != CardOnTile.PLAYER01 && tag == "Player01")
+            {
+                movablePos.Add(pos);
+            }
+        }
     }
 
     public virtual void MoveTo(Vector3Int pos)
     {
+        Board.Instance.getCustomTile(cellPos).cardOnTile = CardOnTile.NEUTRAL;
         isMoving = true;
         _target = Board.Instance.tileMap.GetCellCenterWorld(pos);
         _direction = _target - transform.position;
@@ -64,6 +76,15 @@ public class Selectable : MonoBehaviour
             {
                 transform.position = _target;
                 isMoving = false;
+                cellPos = Board.Instance.getTilePos(transform.position);
+                if (tag == "Player01")
+                {
+                    Board.Instance.getCustomTile(cellPos).cardOnTile = CardOnTile.PLAYER01;
+                }
+                else
+                {
+                    Board.Instance.getCustomTile(cellPos).cardOnTile = CardOnTile.PLAYER02;
+                }
             }
         }
     }

@@ -87,7 +87,6 @@ public class Board : MonoBehaviour
         {      
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("click 2 " + currentPiece.movablePos.Count);
 				if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
 				{
 					if (currentPiece.movablePos.Contains(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))))
