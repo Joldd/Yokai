@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     {
         _victoryPanel.SetActive(false);
     }
+    [SerializeField] private Transform[] cardCapture;
 
     public void UpdatePlayerTurn()
     {
