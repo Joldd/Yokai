@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class Tanuki : Selectable
 {
-    public override void OnMouseDown()
+    public override void ShowDeplacements()
     {
-        Vector3Int h = Board.Instance.getTilePos(transform.position);
-        h.y += 1;
-        Board.Instance.changeTileColor(h);
-        h.y -= 2;
-        Board.Instance.changeTileColor(h);
-        h.y += 1;
-        h.x -= 1;
-        Board.Instance.changeTileColor(h);
-        h.x += 2;
-        Board.Instance.changeTileColor(h);
+        base.ShowDeplacements();
+        Board.Instance.changeTileColor(cellUp(), Color.red);
+        Board.Instance.changeTileColor(cellDown(), Color.red);
+        Board.Instance.changeTileColor(cellRight(), Color.red);
+        Board.Instance.changeTileColor(cellLeft(), Color.red);
+    }
+
+    public override void HideDeplacements()
+    {
+        base.ShowDeplacements();
+        Board.Instance.changeTileColor(cellUp(), Color.white);
+        Board.Instance.changeTileColor(cellDown(), Color.white);
+        Board.Instance.changeTileColor(cellRight(), Color.white);
+        Board.Instance.changeTileColor(cellLeft(), Color.white);
     }
 }

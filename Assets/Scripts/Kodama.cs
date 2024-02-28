@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Kodama : Selectable
 {
-    public override void OnMouseDown()
+    public override void ShowDeplacements()
     {
-        Vector3Int h = Board.Instance.getTilePos(transform.position);
-        h.y += 1;
-        Board.Instance.changeTileColor(h);
+        base.ShowDeplacements();
+        Board.Instance.changeTileColor(cellUp(), Color.red);
+    }
+
+    public override void HideDeplacements()
+    {
+        base.ShowDeplacements();
+        Board.Instance.changeTileColor(cellUp(), Color.white);
     }
 }

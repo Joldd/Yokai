@@ -7,6 +7,8 @@ public class Board : MonoBehaviour
 
     public static Board Instance { get; private set; }
 
+    public Selectable currentPiece;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,17 +30,9 @@ public class Board : MonoBehaviour
         return tileMap.WorldToCell(pos);
     }
 
-    public void changeTileColor(Vector3Int pos)
+    public void changeTileColor(Vector3Int pos, Color color)
     {
         tileMap.SetTileFlags(pos, TileFlags.None);
-        tileMap.SetColor(pos, Color.red);
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log(getTilePos(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
-        }
+        tileMap.SetColor(pos, color);
     }
 }
