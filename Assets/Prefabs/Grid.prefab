@@ -149,7 +149,6 @@ GameObject:
   - component: {fileID: 646725206242203464}
   - component: {fileID: 5393625790886982947}
   - component: {fileID: 4648071272326326973}
-  - component: {fileID: 1109293695701397855}
   - component: {fileID: 7041027008505626315}
   m_Layer: 7
   m_Name: Board

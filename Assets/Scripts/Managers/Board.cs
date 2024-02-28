@@ -12,6 +12,10 @@ public class Board : MonoBehaviour
     [SerializeField] Camera _camera;
     public BoardRow[] currentBoard;
 
+    public bool isPlayer1Turn = true;
+
+    [SerializeField] UIManager uiManager;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -26,6 +30,8 @@ public class Board : MonoBehaviour
     private void Start()
     {
         tileMap = GetComponent<Tilemap>();
+
+        uiManager.UpdatePlayerTurn();
     }
 
     public Vector3Int getTilePos(Vector3 pos)
@@ -90,6 +96,9 @@ public class Board : MonoBehaviour
                         currentPiece.MoveTo(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
                         currentPiece.HideDeplacements();
                         currentPiece = null;
+                        isPlayer1Turn = !isPlayer1Turn;
+                        uiManager.UpdatePlayerTurn();
+                        break;
                     }
 				}
 				//for (int i = 0; i < currentPiece.movablePos.Count; i++)
