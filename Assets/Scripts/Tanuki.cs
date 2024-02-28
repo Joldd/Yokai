@@ -6,19 +6,32 @@ public class Tanuki : Selectable
 {
     public override void ShowDeplacements()
     {
+        //Current position on board
         base.ShowDeplacements();
-        Board.Instance.changeTileColor(cellUp(), Color.red);
-        Board.Instance.changeTileColor(cellDown(), Color.red);
-        Board.Instance.changeTileColor(cellRight(), Color.red);
-        Board.Instance.changeTileColor(cellLeft(), Color.red);
+
+        //Add possibles movements
+        movablePos.Add(cellUp());
+        movablePos.Add(cellDown());
+        movablePos.Add(cellRight());
+        movablePos.Add(cellLeft());
+
+        //Red tiles
+        foreach (Vector3Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.red);
+        }
     }
 
     public override void HideDeplacements()
     {
         base.ShowDeplacements();
-        Board.Instance.changeTileColor(cellUp(), Color.white);
-        Board.Instance.changeTileColor(cellDown(), Color.white);
-        Board.Instance.changeTileColor(cellRight(), Color.white);
-        Board.Instance.changeTileColor(cellLeft(), Color.white);
+
+        //Clear color
+        foreach (Vector3Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.white);
+        }
+
+        movablePos.Clear();
     }
 }

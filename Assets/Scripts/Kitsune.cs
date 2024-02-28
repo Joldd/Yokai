@@ -6,19 +6,32 @@ public class Kitsune : Selectable
 {
     public override void ShowDeplacements()
     {
+        //Current position on board
         base.ShowDeplacements();
-        Board.Instance.changeTileColor(cellUpLeft(), Color.red);
-        Board.Instance.changeTileColor(cellUpRight(), Color.red);
-        Board.Instance.changeTileColor(cellDownLeft(), Color.red);
-        Board.Instance.changeTileColor(cellDownRight(), Color.red);
+
+        //Add possibles movements
+        movablePos.Add(cellUpLeft());
+        movablePos.Add(cellUpRight());
+        movablePos.Add(cellDownLeft());
+        movablePos.Add(cellDownRight());
+
+        //Red tiles
+        foreach (Vector3Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.red);
+        }
     }
 
     public override void HideDeplacements()
     {
         base.ShowDeplacements();
-        Board.Instance.changeTileColor(cellUpLeft(), Color.white);
-        Board.Instance.changeTileColor(cellUpRight(), Color.white);
-        Board.Instance.changeTileColor(cellDownLeft(), Color.white);
-        Board.Instance.changeTileColor(cellDownRight(), Color.white);
+
+        //Clear color
+        foreach (Vector3Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.white);
+        }
+
+        movablePos.Clear();
     }
 }

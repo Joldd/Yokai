@@ -3,11 +3,13 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-    private Tilemap tileMap;
+    public Tilemap tileMap;
 
     public static Board Instance { get; private set; }
 
     public Selectable currentPiece;
+
+    [SerializeField] Camera _camera;
 
     private void Awake()
     {
@@ -34,5 +36,26 @@ public class Board : MonoBehaviour
     {
         tileMap.SetTileFlags(pos, TileFlags.None);
         tileMap.SetColor(pos, color);
+    }
+
+    private void Update()
+    {
+        if (currentPiece != null)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                for (int i = 0; i < currentPiece.movablePos.Count; i++)
+                {
+                    Vector3Int movable = currentPiece.movablePos[i];
+                    if (movable == getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)))
+                    {
+                        currentPiece.MoveTo(movable);
+                        currentPiece.HideDeplacements();
+                        currentPiece = null;
+                        break;
+                    }
+                }
+            }          
+        }
     }
 }

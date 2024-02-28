@@ -5,6 +5,7 @@ using UnityEngine;
 public class Selectable : MonoBehaviour
 {
     public Vector3Int cellPos;
+    public List<Vector3Int> movablePos = new List<Vector3Int>();
 
     public virtual void OnMouseDown()
     {
@@ -24,6 +25,11 @@ public class Selectable : MonoBehaviour
         {
             Board.Instance.currentPiece = this;
         }
+    }
+
+    public virtual void MoveTo(Vector3Int pos)
+    {
+        transform.position = Board.Instance.tileMap.GetCellCenterWorld(pos);
     }
 
     public virtual void ShowDeplacements()
