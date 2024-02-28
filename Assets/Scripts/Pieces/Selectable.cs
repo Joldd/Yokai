@@ -86,13 +86,21 @@ public class Selectable : MonoBehaviour
                     if (cardOnTile.tag != tag)
                     {
                         if (cardOnTile.TryGetComponent<Koropokkuru>(out Koropokkuru card)){
-                            UIManager.Instance.Victory(1);
+                            if (tag == "Player01")
+                            {
+                                UIManager.Instance.Victory(1);
+                            }
+                            else
+                            {
+                                UIManager.Instance.Victory(2);
+                            }
                         }
                         int player = tag == "Player01" ? 0 : 1;
                         Transform parent = UIManager.Instance.capturedPanel[player];
                         GameObject go = Instantiate(capturedPrefab, parent);
                         go.GetComponent<CapturedCard>().SetCapturedPiece(cardOnTile.cardType, player + 1, cardOnTile.GetComponent<SpriteRenderer>().sprite);
                         Destroy(cardOnTile.gameObject);
+                        GameManager.Instance.killUnit(cardOnTile);
                     }
                 }
                 Board.Instance.getCustomTile(cellPos).cardOnTile = this;

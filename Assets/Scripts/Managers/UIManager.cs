@@ -46,4 +46,15 @@ public class UIManager : MonoBehaviour
         _victoryPanel.SetActive(true);
         _victoryText.text = " Victoire du joueur " + i + " !";
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void PlayAgain()
+    {
+        GameManager.Instance.InstanceBoard();
+        _victoryPanel.SetActive(false);
+    }
 }

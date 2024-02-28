@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public GamePiece[] gamePieces;
 
+    public List<Selectable> allPieces = new List<Selectable>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -25,10 +27,14 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-        ClearBoard();
+        InstanceBoard();
+    }
 
-		for (int i = 0; i < 2; i++)
-		{
+    public void InstanceBoard()
+    {
+        ClearBoard();
+        for (int i = 0; i < 2; i++)
+        {
             for (int j = 0; j < 4; j++)
             {
                 GamePiece gp = gamePieces[j];
@@ -51,9 +57,16 @@ public class GameManager : MonoBehaviour
                     Board.Instance.getCustomTile(new Vector3Int(2, 3, 0) - gp.pieceCoord).cardOnTile = go.GetComponent<Selectable>();
                     go.transform.eulerAngles = new Vector3(0, 0, 180);
                 }
+                allPieces.Add(go.GetComponent<Selectable>());
             }
         }
-	}
+    }
+
+    public void killUnit(Selectable s)
+    {
+        allPieces.Remove(s);
+        Destroy(s.gameObject);
+    }
 
     private void ClearBoard()
     {
@@ -70,11 +83,13 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
 
-    private void Update()
-    {
+        for (int i = allPieces.Count - 1; i >= 0; i--)
+        {
+            Destroy(allPieces[i].gameObject);
+        }
 
+        allPieces.Clear();
     }
 }
 
