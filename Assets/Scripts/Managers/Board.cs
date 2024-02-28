@@ -98,7 +98,6 @@ public class Board : MonoBehaviour
                         currentPiece = null;
                         isPlayer1Turn = !isPlayer1Turn;
                         uiManager.UpdatePlayerTurn();
-                        break;
                     }
 				}
 				//for (int i = 0; i < currentPiece.movablePos.Count; i++)

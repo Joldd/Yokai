@@ -7,6 +7,7 @@ public class Kodama : Selectable
     private SpriteRenderer _spriteRenderer;
     [SerializeField] private Sprite _samourai;
     [SerializeField] private Sprite _normal;
+
     private bool isSamourai;
 
     private void Start()
