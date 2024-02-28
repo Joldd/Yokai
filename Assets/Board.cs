@@ -3,9 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-    [SerializeField] Tilemap tileMap;
-    Vector3Int location;
-    [SerializeField] Tile tileRed;
+    private Tilemap tileMap;
 
     public static Board Instance { get; private set; }
 
@@ -34,5 +32,13 @@ public class Board : MonoBehaviour
     {
         tileMap.SetTileFlags(pos, TileFlags.None);
         tileMap.SetColor(pos, Color.red);
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log(getTilePos(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        }
     }
 }
