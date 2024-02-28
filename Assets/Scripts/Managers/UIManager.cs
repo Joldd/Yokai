@@ -6,6 +6,27 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _playerTurn;
+    [SerializeField] private TextMeshProUGUI _victoryText;
+    [SerializeField] private GameObject _victoryPanel;
+
+    public static UIManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        _victoryPanel.SetActive(false);
+    }
 
     public void UpdatePlayerTurn()
     {
@@ -17,5 +38,11 @@ public class UIManager : MonoBehaviour
         {
             _playerTurn.text = "Player 2 turn";
         }
+    }
+
+    public void Victory(int i)
+    {
+        _victoryPanel.SetActive(true);
+        _victoryText.text = " Victoire du joueur " + i + " !";
     }
 }

@@ -82,6 +82,9 @@ public class Selectable : MonoBehaviour
                 {
                     if (cardOnTile.tag != tag)
                     {
+                        if (cardOnTile.TryGetComponent<Koropokkuru>(out Koropokkuru card)){
+                            UIManager.Instance.Victory(1);
+                        }
                         Destroy(cardOnTile.gameObject);
                     }
                 }
