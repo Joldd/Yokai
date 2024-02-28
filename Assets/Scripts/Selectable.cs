@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
-    private void OnMouseDown()
+    public virtual void OnMouseDown()
     {
         Debug.Log("haha");
     }
