@@ -41,11 +41,11 @@ public class Selectable : MonoBehaviour
         CustomTile customTile = Board.Instance.getCustomTile(pos);
         if (customTile != null)
         {
-            if (customTile.cardOnTile != CardOnTile.PLAYER02 && tag == "Player02")
+            if (customTile.cardOnTile == null)
             {
                 movablePos.Add(pos);
             }
-            if (customTile.cardOnTile != CardOnTile.PLAYER01 && tag == "Player01")
+            else if (customTile.cardOnTile.tag != tag)
             {
                 movablePos.Add(pos);
             }
@@ -54,7 +54,7 @@ public class Selectable : MonoBehaviour
 
     public virtual void MoveTo(Vector3Int pos)
     {
-        Board.Instance.getCustomTile(cellPos).cardOnTile = CardOnTile.NEUTRAL;
+        Board.Instance.getCustomTile(cellPos).cardOnTile = null;
         isMoving = true;
         _target = Board.Instance.tileMap.GetCellCenterWorld(pos);
         _direction = _target - transform.position;
@@ -77,14 +77,15 @@ public class Selectable : MonoBehaviour
                 transform.position = _target;
                 isMoving = false;
                 cellPos = Board.Instance.getTilePos(transform.position);
-                if (tag == "Player01")
+                Selectable cardOnTile = Board.Instance.getCustomTile(cellPos).cardOnTile;
+                if (cardOnTile != null)
                 {
-                    Board.Instance.getCustomTile(cellPos).cardOnTile = CardOnTile.PLAYER01;
+                    if (cardOnTile.tag != tag)
+                    {
+                        Destroy(cardOnTile.gameObject);
+                    }
                 }
-                else
-                {
-                    Board.Instance.getCustomTile(cellPos).cardOnTile = CardOnTile.PLAYER02;
-                }
+                Board.Instance.getCustomTile(cellPos).cardOnTile = this;             
             }
         }
     }
