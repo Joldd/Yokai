@@ -10,6 +10,7 @@ public class Board : MonoBehaviour
     public Selectable currentPiece;
 
     [SerializeField] Camera _camera;
+    public BoardRow[] currentBoard;
 
     private void Awake()
     {
@@ -34,28 +35,81 @@ public class Board : MonoBehaviour
 
     public void changeTileColor(Vector3Int pos, Color color)
     {
-        tileMap.SetTileFlags(pos, TileFlags.None);
-        tileMap.SetColor(pos, color);
+        if(getCustomTile(pos) != null)
+		{
+            tileMap.SetTileFlags(pos, TileFlags.None);
+            tileMap.SetColor(pos, color);
+        }
     }
 
-    private void Update()
+    public CustomTile getCustomTile(Vector3Int pos)
+	{
+        if (tileMap.GetTile(pos) is CustomTile)
+            return (CustomTile)tileMap.GetTile(pos);
+
+        return null;
+    }
+
+	private void OnMouseDown()
+	{
+
+	}
+
+	private void Update()
     {
+        //TEST
+   //     if (Input.GetMouseButtonDown(0))
+   //     {
+   //         if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
+   //         {
+   //             CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
+
+   //             Debug.Log("pas trop nule");
+
+   //             tile.clickAction.RemoveAllListeners();
+   //             tile.clickAction.AddListener(() => { Debug.Log("Hello tile"); });
+   //             tile.OnClickTile();
+   //         }
+			//else
+			//{
+   //             Debug.Log("nule");
+   //         }
+   //     }
+
         if (currentPiece != null)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                for (int i = 0; i < currentPiece.movablePos.Count; i++)
-                {
-                    Vector3Int movable = currentPiece.movablePos[i];
-                    if (movable == getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)))
-                    {
-                        currentPiece.MoveTo(movable);
+                Debug.Log("click 2 " + currentPiece.movablePos.Count);
+				if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
+				{
+					if (currentPiece.movablePos.Contains(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))))
+					{
+                        CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
+                        tile.OnClickTile();
+                        currentPiece.MoveTo(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
                         currentPiece.HideDeplacements();
                         currentPiece = null;
-                        break;
                     }
-                }
-            }          
+				}
+				//for (int i = 0; i < currentPiece.movablePos.Count; i++)
+				//{
+				//	Vector3Int movable = currentPiece.movablePos[i];
+				//	if (movable == getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)))
+				//	{
+				//		currentPiece.MoveTo(movable);
+				//		currentPiece.HideDeplacements();
+				//		currentPiece = null;
+				//		break;
+				//	}
+				//}
+			}
         }
     }
+}
+
+[System.Serializable]
+public class BoardRow
+{
+    public int[] currentRowBoard;
 }

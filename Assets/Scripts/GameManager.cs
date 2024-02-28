@@ -36,11 +36,15 @@ public class GameManager : MonoBehaviour
                 {
                     go.transform.tag = "Player01";
                     go.transform.position = tileMap.GetCellCenterWorld(gp.pieceCoord);
+                    Board.Instance.currentBoard[gp.pieceCoord.y].currentRowBoard[gp.pieceCoord.x] = 1;
+                    Board.Instance.getCustomTile(gp.pieceCoord).cardOnTile = CardOnTile.PLAYER01;
                 }
                 else
                 {
                     go.transform.tag = "Player02";
                     go.transform.position = tileMap.GetCellCenterWorld(new Vector3Int(2, 3, 0) - gp.pieceCoord);
+                    Board.Instance.currentBoard[3 - gp.pieceCoord.y].currentRowBoard[2 - gp.pieceCoord.x] = 2;
+                    Board.Instance.getCustomTile(new Vector3Int(2, 3, 0) - gp.pieceCoord).cardOnTile = CardOnTile.PLAYER02;
                     go.transform.eulerAngles = new Vector3(0, 0, 180);
                 }
             }
