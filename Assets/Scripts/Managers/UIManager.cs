@@ -6,6 +6,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _playerTurn;
+    [SerializeField] private Transform[] cardCapture;
 
     public void UpdatePlayerTurn()
     {
