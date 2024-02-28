@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 
 public class Board : MonoBehaviour
 {
@@ -10,9 +11,10 @@ public class Board : MonoBehaviour
     public Selectable currentPiece;
 
     [SerializeField] Camera _camera;
-    public BoardRow[] currentBoard;
+    //public BoardRow[] currentBoard;
 
     public bool isPlayer1Turn = true;
+    [HideInInspector] public UnityEvent changeTurn;
 
     [SerializeField] UIManager uiManager;
 
@@ -32,6 +34,11 @@ public class Board : MonoBehaviour
         tileMap = GetComponent<Tilemap>();
 
         uiManager.UpdatePlayerTurn();
+
+        changeTurn.AddListener(() =>
+        {
+            uiManager.UpdatePlayerTurn();
+        });
     }
 
     public Vector3Int getTilePos(Vector3 pos)
@@ -64,27 +71,19 @@ public class Board : MonoBehaviour
 
 	private void Update()
     {
-        //TEST
-   //     if (Input.GetMouseButtonDown(0))
-   //     {
-   //         if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
-   //         {
-   //             CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
+		//TEST
+		if (Input.GetMouseButtonDown(0))
+		{
+			if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
+			{
+				CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
 
-   //             Debug.Log("pas trop nule");
+				tile.OnClickTile();
+			}
+		}
 
-   //             tile.clickAction.RemoveAllListeners();
-   //             tile.clickAction.AddListener(() => { Debug.Log("Hello tile"); });
-   //             tile.OnClickTile();
-   //         }
-			//else
-			//{
-   //             Debug.Log("nule");
-   //         }
-   //     }
-
-        if (currentPiece != null)
-        {      
+		if (currentPiece != null)
+        {
             if (Input.GetMouseButtonDown(0))
             {
 				if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
@@ -97,7 +96,7 @@ public class Board : MonoBehaviour
                         currentPiece.HideDeplacements();
                         currentPiece = null;
                         isPlayer1Turn = !isPlayer1Turn;
-                        uiManager.UpdatePlayerTurn();
+                        changeTurn.Invoke();
                     }
 				}
 				//for (int i = 0; i < currentPiece.movablePos.Count; i++)
@@ -112,6 +111,22 @@ public class Board : MonoBehaviour
 				//	}
 				//}
 			}
+        }
+    }
+
+    public void ClearTile()
+	{
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Vector3Int pos = new Vector3Int(j, i, 0);
+                if (getCustomTile(pos) != null)
+                {
+                    changeTileColor(pos, Color.white);
+                    getCustomTile(pos).clickAction.RemoveAllListeners();
+                }
+            }
         }
     }
 }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
+
 
 public class CapturedCard : MonoBehaviour
 {
@@ -9,7 +11,18 @@ public class CapturedCard : MonoBehaviour
     [SerializeField] private GameObject prefab;
     [SerializeField] private int player;
 
-    public void SetCapturedPiece(GameObject prefab, int player)
+	private void Start()
+	{
+		Board.Instance.changeTurn.AddListener(() =>
+		{
+			if (Board.Instance.isPlayer1Turn)
+				GetComponent<Button>().interactable = player == 1 ? true : false;
+			else
+				GetComponent<Button>().interactable = player == 1 ? false : true;
+		});
+	}
+
+	public void SetCapturedPiece(GameObject prefab, int player)
 	{
         this.prefab = prefab;
         this.player = player;
@@ -19,15 +32,43 @@ public class CapturedCard : MonoBehaviour
     public void OnClickPiece()
 	{
 		//TO DO display available tile
-		for (int i = 0; i < Board.Instance.currentBoard.Length; i++)
+		for (int i = 0; i < 4; i++)
 		{
-			for (int j = 0; j < Board.Instance.currentBoard[i].currentRowBoard.Length; j++)
+			for (int j = 0; j < 3; j++)
 			{
-				if(Board.Instance.currentBoard[i].currentRowBoard[j] == 0)
+				Vector3Int pos = new Vector3Int(j, i, 0);
+				if (Board.Instance.getCustomTile(pos) != null && Board.Instance.getCustomTile(new Vector3Int(j, i, 0)).cardOnTile == null)
 				{
-					Board.Instance.changeTileColor(new Vector3Int(j, i, 0), Color.red);
+					Board.Instance.changeTileColor(pos, Color.red);
+					Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
+					Board.Instance.getCustomTile(pos).clickAction.AddListener(() => {
+						InvokePiece(pos);
+						Board.Instance.ClearTile();
+						Board.Instance.isPlayer1Turn = !Board.Instance.isPlayer1Turn;
+						Board.Instance.changeTurn.Invoke();
+					});
+
 				}
 			}
 		}
+	}
+
+	private void InvokePiece(Vector3Int pos)
+	{
+		GameObject go = Instantiate(prefab);
+		go.transform.position = Board.Instance.tileMap.GetCellCenterWorld(pos);
+		Board.Instance.getCustomTile(pos).cardOnTile = go.GetComponent<Selectable>();
+
+		if (player == 1)
+		{
+			go.transform.tag = "Player01";
+		}
+		else
+		{
+			go.transform.tag = "Player02";
+			go.transform.eulerAngles = new Vector3(0, 0, 180);
+		}
+
+		Destroy(this.gameObject);
 	}
 }

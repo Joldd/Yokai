@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
+        ClearBoard();
+
 		for (int i = 0; i < 2; i++)
 		{
             for (int j = 0; j < 4; j++)
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
                 {
                     go.transform.tag = "Player01";
                     go.transform.position = tileMap.GetCellCenterWorld(gp.pieceCoord);
-                    Board.Instance.currentBoard[gp.pieceCoord.y].currentRowBoard[gp.pieceCoord.x] = 1;
+                    //Board.Instance.currentBoard[gp.pieceCoord.y].currentRowBoard[gp.pieceCoord.x] = 1;
                     Board.Instance.tileMap.SetTileFlags(gp.pieceCoord, TileFlags.None);
                     Board.Instance.getCustomTile(gp.pieceCoord).cardOnTile = go.GetComponent<Selectable>();
                 }
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
                 {
                     go.transform.tag = "Player02";
                     go.transform.position = tileMap.GetCellCenterWorld(new Vector3Int(2, 3, 0) - gp.pieceCoord);
-                    Board.Instance.currentBoard[3 - gp.pieceCoord.y].currentRowBoard[2 - gp.pieceCoord.x] = 2;
+                    //Board.Instance.currentBoard[3 - gp.pieceCoord.y].currentRowBoard[2 - gp.pieceCoord.x] = 2;
                     Board.Instance.tileMap.SetTileFlags(gp.pieceCoord, TileFlags.None);
                     Board.Instance.getCustomTile(new Vector3Int(2, 3, 0) - gp.pieceCoord).cardOnTile = go.GetComponent<Selectable>();
                     go.transform.eulerAngles = new Vector3(0, 0, 180);
@@ -53,7 +55,24 @@ public class GameManager : MonoBehaviour
         }
 	}
 
-	private void Update()
+    private void ClearBoard()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Vector3Int pos = new Vector3Int(j, i, 0);
+                if (Board.Instance.getCustomTile(pos) != null)
+                {
+                    Board.Instance.changeTileColor(pos, Color.white);
+                    Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
+                    Board.Instance.getCustomTile(pos).cardOnTile = null;
+                }
+            }
+        }
+    }
+
+    private void Update()
     {
 
     }
