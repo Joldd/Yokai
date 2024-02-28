@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,7 +121,259 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: 4x3_0
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 603
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c64fdf3a58c54d74089bcfac86da1b56
+      internalID: 1201434249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_1
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 603
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 254a2d413e3119642bb809399b0b755b
+      internalID: -343611806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_2
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 603
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 974aa5c4da0f91a4cb8895c190b9d9f8
+      internalID: 591382733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_3
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 444
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a5cfdc66dbb1544694db8e0da285d7a
+      internalID: 175185883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_4
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 444
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5965afa3e08b2f4f90d7fabbb4b6e0c
+      internalID: 264731863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_5
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 444
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e261355584706345807f16216b773c4
+      internalID: -1106892686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_6
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 285
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2a9d9c517e6e0c42b4288e70b5169b7
+      internalID: 1147218693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_7
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 285
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0488d9e1a703978469e8eb86168aed05
+      internalID: -855535243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_8
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 285
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3c01ce26d489cd4c815157d7829f3e8
+      internalID: 1002243780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_9
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 126
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55b49ac6b5ed3c746a5d98236df230b3
+      internalID: -408103294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_10
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 126
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03b2c8e956ecb7f46ae6cc3c6a7f148a
+      internalID: -679747091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 4x3_11
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 126
+        width: 159
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4add6a5955f17ea4899e6046dfd2a1eb
+      internalID: 1576480108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +384,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      4x3_0: 1201434249
+      4x3_1: -343611806
+      4x3_10: -679747091
+      4x3_11: 1576480108
+      4x3_2: 591382733
+      4x3_3: 175185883
+      4x3_4: 264731863
+      4x3_5: -1106892686
+      4x3_6: 1147218693
+      4x3_7: -855535243
+      4x3_8: 1002243780
+      4x3_9: -408103294
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
