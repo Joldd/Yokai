@@ -25,18 +25,8 @@ public class Board : MonoBehaviour
         tileMap = GetComponent<Tilemap>();
     }
 
-    void Update()
+    public Vector3Int getTilePos(Vector3 pos)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            location = getTilePos();
-            changeTileColor(location);
-        }
-    }
-
-    public Vector3Int getTilePos()
-    {
-        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         return tileMap.WorldToCell(pos);
     }
 

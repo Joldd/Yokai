@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 968306634114420973}
   - component: {fileID: 4429732016955913600}
   - component: {fileID: 7980983972381101922}
-  - component: {fileID: 5637728539737180421}
+  - component: {fileID: 1437125922209683531}
   m_Layer: 0
   m_Name: Koropokkuru
   m_TagString: Untagged
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 2.56}
   m_EdgeRadius: 0
---- !u!114 &5637728539737180421
+--- !u!114 &1437125922209683531
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
