@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Kitsune : Selectable
 {
@@ -10,10 +11,10 @@ public class Kitsune : Selectable
         base.ShowDeplacements();
 
         //Add possibles movements
-        movablePos.Add(cellUpLeft());
-        movablePos.Add(cellUpRight());
-        movablePos.Add(cellDownLeft());
-        movablePos.Add(cellDownRight());
+        addMovablePos(cellUpLeft());
+        addMovablePos(cellUpRight());
+        addMovablePos(cellDownLeft());
+        addMovablePos(cellDownRight());
 
         //Red tiles
         foreach (Vector3Int mov in movablePos)

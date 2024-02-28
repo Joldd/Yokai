@@ -36,6 +36,11 @@ public class Selectable : MonoBehaviour
         }
     }
 
+    public void addMovablePos(Vector3Int pos)
+    {
+        if (Board.Instance.getCustomTile(pos) != null) movablePos.Add(pos);
+    }
+
     public virtual void MoveTo(Vector3Int pos)
     {
         isMoving = true;
