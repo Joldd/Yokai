@@ -69,6 +69,8 @@ public class Board : MonoBehaviour
 
 	private void Update()
     {
+        if (GameManager.Instance.gamePaused) return;
+
 		if (Input.GetMouseButtonDown(0))
 		{
 			if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)

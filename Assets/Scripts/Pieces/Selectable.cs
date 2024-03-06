@@ -20,6 +20,7 @@ public class Selectable : MonoBehaviour, IPawn
 
 	public virtual void OnMouseDown()
     {
+        if (GameManager.Instance.gamePaused) return;
 
         if (tag == "Player01" && !Board.Instance.isPlayer1Turn) return;
 
@@ -69,6 +70,8 @@ public class Selectable : MonoBehaviour, IPawn
 
     private void Update()
     {
+        if (GameManager.Instance.gamePaused) return;
+
         if (isMoving)
         {
             if (tag == "Player01")

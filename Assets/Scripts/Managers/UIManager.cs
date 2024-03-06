@@ -10,6 +10,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _victoryText;
     [SerializeField] private GameObject _victoryPanel;
     [SerializeField] public Transform[] capturedPanel;
+    [SerializeField] private GameObject _menuPanel;
+    [SerializeField] private GameObject _gamePanel;
+    [SerializeField] private GameObject _pausePanel;
 
     public static UIManager Instance { get; private set; }
 
@@ -27,7 +30,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        _victoryPanel.SetActive(false);
+        BackMenu();
     }
 
     public void UpdatePlayerTurn()
@@ -46,16 +49,16 @@ public class UIManager : MonoBehaviour
     {
         _victoryPanel.SetActive(true);
         _victoryText.text = " Victoire du joueur " + i + " !";
-        capturedPanel[0].gameObject.SetActive(false);
-        capturedPanel[1].gameObject.SetActive(false);
+        _gamePanel.SetActive(false);
+        GameManager.Instance.gamePaused = true;
     }
 
     public void StaleMate()
     {
         _victoryPanel.SetActive(true);
         _victoryText.text = " Match nul !";
-        capturedPanel[0].gameObject.SetActive(false);
-        capturedPanel[1].gameObject.SetActive(false);
+        _gamePanel.SetActive(false);
+        GameManager.Instance.gamePaused = true;
     }
 
     public void Quit()
@@ -65,11 +68,13 @@ public class UIManager : MonoBehaviour
 
     public void PlayAgain()
     {
+        Board.Instance.isPlayer1Turn = true;
         GameManager.Instance.InstanceBoard();
         ClearCapture();
         _victoryPanel.SetActive(false);
-        capturedPanel[0].gameObject.SetActive(true);
-        capturedPanel[1].gameObject.SetActive(true);
+        _gamePanel.SetActive(true);
+        _pausePanel.SetActive(false);
+        GameManager.Instance.gamePaused = false;
     }
 
     private void ClearCapture()
@@ -82,5 +87,48 @@ public class UIManager : MonoBehaviour
         {
             Destroy(capturedPanel[1].GetChild(i).gameObject);
         }
+    }
+
+    public void PlayPlayer()
+    {
+        Board.Instance.isPlayer1Turn = true;
+        GameManager.Instance.InstanceBoard();
+        ClearCapture();
+        _victoryPanel.SetActive(false);
+        _gamePanel.SetActive(true);
+        _menuPanel.SetActive(false);
+        GameManager.Instance.gamePaused = false;
+    }
+
+    public void PlayIA()
+    {
+        Board.Instance.isPlayer1Turn = true;
+        GameManager.Instance.InstanceBoard();
+        ClearCapture();
+        _victoryPanel.SetActive(false);
+        _gamePanel.SetActive(true);
+        _menuPanel.SetActive(false);
+        GameManager.Instance.gamePaused = false;
+    }
+
+    public void BackMenu()
+    {
+        _victoryPanel.SetActive(false);
+        _gamePanel.SetActive(false);
+        _menuPanel.SetActive(true);
+        _pausePanel.SetActive(false);
+        GameManager.Instance.gamePaused = true;
+    }
+
+    public void Pause()
+    {
+        _pausePanel.SetActive(true);
+        GameManager.Instance.gamePaused = true;
+    }
+
+    public void Continue()
+    {
+        _pausePanel.SetActive(false);
+        GameManager.Instance.gamePaused = false;
     }
 }
