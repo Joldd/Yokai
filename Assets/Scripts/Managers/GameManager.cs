@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     [SerializeField] public GamePiece[] gamePieces;
 
+    [SerializeField] public Transform player01, player02;
+
     public List<Selectable> allPieces = new List<Selectable>();
 
     private List<Vector3Int> boardCurrent = new List<Vector3Int>();
@@ -58,8 +60,10 @@ public class GameManager : MonoBehaviour, IGameManager
                 Selectable selectable = go.GetComponent<Selectable>();
                 if (i == 0)
                 {
-                    go.transform.tag = "Player01";
+                    go.transform.SetParent(player01);
+                    go.transform.tag = go.transform.parent.tag;
                     go.transform.position = tileMap.GetCellCenterWorld(gp.pieceCoord);
+
                     //Board.Instance.currentBoard[gp.pieceCoord.y].currentRowBoard[gp.pieceCoord.x] = 1;
                     Board.Instance.tileMap.SetTileFlags(gp.pieceCoord, TileFlags.None);
                     Board.Instance.getCustomTile(gp.pieceCoord).cardOnTile = selectable;
@@ -67,8 +71,10 @@ public class GameManager : MonoBehaviour, IGameManager
                 }
                 else
                 {
-                    go.transform.tag = "Player02";
+                    go.transform.SetParent(player02);
+                    go.transform.tag = go.transform.parent.tag;
                     go.transform.position = tileMap.GetCellCenterWorld(new Vector3Int(2, 3, 0) - gp.pieceCoord);
+
                     //Board.Instance.currentBoard[3 - gp.pieceCoord.y].currentRowBoard[2 - gp.pieceCoord.x] = 2;
                     Board.Instance.tileMap.SetTileFlags(gp.pieceCoord, TileFlags.None);
                     Board.Instance.getCustomTile(new Vector3Int(2, 3, 0) - gp.pieceCoord).cardOnTile = selectable;

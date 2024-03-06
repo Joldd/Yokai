@@ -40,13 +40,15 @@ public class CapturedCard : MonoBehaviour
 		if (this.player == 1)
 		{
 			image.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
-			currentCard.transform.tag = "Player01";
+			currentCard.transform.SetParent(GameManager.Instance.player01);
+			currentCard.transform.tag = currentCard.transform.parent.tag;
 			currentCard.transform.eulerAngles = new Vector3(0, 0, 0);
 		}
 		else
 		{
 			image.gameObject.transform.eulerAngles = new Vector3(0, 0, 180);
-			currentCard.transform.tag = "Player02";
+			currentCard.transform.SetParent(GameManager.Instance.player02);
+			currentCard.transform.tag = currentCard.transform.parent.tag;
 			currentCard.transform.eulerAngles = new Vector3(0, 0, 180);
 		}
 	}
