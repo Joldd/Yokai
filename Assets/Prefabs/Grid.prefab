@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 2879779736568316261}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.7, y: 5.8, z: -1}
+  m_LocalPosition: {x: 4.425, y: 6.1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -753,12 +753,10 @@ MonoBehaviour:
   tileMap: {fileID: 5393625790886982947}
   currentPiece: {fileID: 0}
   _camera: {fileID: 6738504701169800814}
-  currentBoard:
-  - currentRowBoard: 000000000000000000000000
-  - currentRowBoard: 000000000000000000000000
-  - currentRowBoard: 000000000000000000000000
-  - currentRowBoard: 000000000000000000000000
   isPlayer1Turn: 1
+  changeTurn:
+    m_PersistentCalls:
+      m_Calls: []
   uiManager: {fileID: 0}
 --- !u!19719996 &1109293695701397855
 TilemapCollider2D:

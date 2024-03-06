@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Kodama : Selectable
 {
-    private SpriteRenderer _spriteRenderer;
+    [HideInInspector] public SpriteRenderer _spriteRenderer;
     public Sprite _samourai;
     public Sprite _normal;
 

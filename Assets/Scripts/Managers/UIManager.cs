@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -81,11 +82,13 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < capturedPanel[0].childCount; i++)
         {
-            Destroy(capturedPanel[0].GetChild(i).gameObject);
+            if(capturedPanel[0].GetChild(i).gameObject.GetComponent<Image>() != null)
+                Destroy(capturedPanel[0].GetChild(i).gameObject);
         }
         for (int i = 0; i < capturedPanel[1].childCount; i++)
         {
-            Destroy(capturedPanel[1].GetChild(i).gameObject);
+            if (capturedPanel[1].GetChild(i).gameObject.GetComponent<Image>() != null)
+                Destroy(capturedPanel[1].GetChild(i).gameObject);
         }
     }
 

@@ -32,8 +32,13 @@ public class CapturedCard : MonoBehaviour
 		this.currentCard = card;
 		this.player = player;
 
-		if(card is Kodama)
-			image.sprite = (card as Kodama)._normal;
+		if(currentCard is Kodama)
+		{
+			Kodama kodama = currentCard as Kodama;
+			image.sprite = kodama._normal;
+			kodama.isSamourai = false;
+			kodama._spriteRenderer.sprite = kodama._normal;
+		}
 		else
 			image.sprite = card.GetComponent<SpriteRenderer>().sprite;
 
