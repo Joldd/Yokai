@@ -13,12 +13,14 @@ public class Selectable : MonoBehaviour, IPawn
     public Vector3 _target;
     public Vector3 _direction;
     public float _speed = 3f;
+    public bool isDead = false;
 
     [SerializeField] private GameObject capturedPrefab;
-    [SerializeField] private int cardType;
+    public int cardType;
 
 	public virtual void OnMouseDown()
     {
+
         if (tag == "Player01" && !Board.Instance.isPlayer1Turn) return;
 
         if (tag == "Player02" && Board.Instance.isPlayer1Turn) return;
@@ -100,8 +102,7 @@ public class Selectable : MonoBehaviour, IPawn
                         int player = tag == "Player01" ? 0 : 1;
                         Transform parent = UIManager.Instance.capturedPanel[player];
                         GameObject go = Instantiate(capturedPrefab, parent);
-                        go.GetComponent<CapturedCard>().SetCapturedPiece(cardOnTile.cardType, player + 1, cardOnTile.GetComponent<SpriteRenderer>().sprite);
-                        Destroy(cardOnTile.gameObject);
+                        go.GetComponent<CapturedCard>().SetCapturedPiece(cardOnTile, player + 1);
                         GameManager.Instance.killUnit(cardOnTile);
                     }
                 }
@@ -114,6 +115,17 @@ public class Selectable : MonoBehaviour, IPawn
     public virtual void ShowDeplacements()
     {
         cellPos = Board.Instance.getTilePos(transform.position);
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Vector3Int pos = new Vector3Int(j, i, 0);
+
+                Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
+                Board.Instance.changeTileColor(pos, Color.white);
+            }
+        }
     }
 
     public virtual void HideDeplacements()

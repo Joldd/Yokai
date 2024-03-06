@@ -5,8 +5,8 @@ using UnityEngine;
 public class Kodama : Selectable
 {
     private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Sprite _samourai;
-    [SerializeField] private Sprite _normal;
+    public Sprite _samourai;
+    public Sprite _normal;
 
     public bool isSamourai;
 

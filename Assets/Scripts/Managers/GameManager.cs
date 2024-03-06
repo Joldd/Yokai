@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using YokaiNoMori.Enumeration;
+using YokaiNoMori.Interface;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IGameManager
 {
     public static GameManager Instance { get; private set; }
 
@@ -79,8 +81,11 @@ public class GameManager : MonoBehaviour
 
     public void killUnit(Selectable s)
     {
-        allPieces.Remove(s);
-        Destroy(s.gameObject);
+        //allPieces.Remove(s);
+        //Destroy(s.gameObject);
+        s.isDead = true;
+        //s.gameObject.SetActive(false);
+        s.gameObject.transform.position = new Vector3(100, 100, 0);
     }
 
     private void ClearBoard()
@@ -157,6 +162,41 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    //Interface IGameManager
+	public List<IPawn> GetAllPawn()
+	{
+        List<IPawn> pawnList = new List<IPawn>();
+		foreach (Selectable pawn in allPieces)
+		{
+            pawnList.Add(pawn);
+		}
+        return pawnList;
+	}
+
+	public List<IBoardCase> GetAllBoardCase()
+	{
+        List<IBoardCase> boardCaseList = new List<IBoardCase>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Vector3Int pos = new Vector3Int(j, i, 0);
+
+                CustomTile ct = Board.Instance.getCustomTile(pos);
+                if (ct != null)
+                    boardCaseList.Add(ct);
+            }
+        }
+
+        return boardCaseList;
+	}
+
+	public void DoAction(IPawn pawnTarget, Vector2Int position, EActionType actionType)
+	{
+		throw new System.NotImplementedException();
+	}
 }
 
 [System.Serializable]
