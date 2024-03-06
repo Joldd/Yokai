@@ -47,6 +47,12 @@ public class UIManager : MonoBehaviour
         _victoryText.text = " Victoire du joueur " + i + " !";
     }
 
+    public void StaleMate()
+    {
+        _victoryPanel.SetActive(true);
+        _victoryText.text = " Match nul !";
+    }
+
     public void Quit()
     {
         Application.Quit();

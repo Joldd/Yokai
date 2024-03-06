@@ -104,6 +104,7 @@ public class Selectable : MonoBehaviour
                     }
                 }
                 Board.Instance.getCustomTile(cellPos).cardOnTile = this;
+                GameManager.Instance.CheckRepetition();
             }
         }
     }

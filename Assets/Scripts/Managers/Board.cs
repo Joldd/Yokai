@@ -59,8 +59,6 @@ public class Board : MonoBehaviour
 	{
         if (tileMap.GetTile(pos) is CustomTile)
             return (CustomTile)tileMap.GetTile(pos);
-        if(tileMap.GetTile(pos) is Tile)
-            Debug.Log("normal tile");
         return null;
     }
 
@@ -71,7 +69,6 @@ public class Board : MonoBehaviour
 
 	private void Update()
     {
-		//TEST
 		if (Input.GetMouseButtonDown(0))
 		{
 			if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
@@ -90,6 +87,7 @@ public class Board : MonoBehaviour
 				{
 					if (currentPiece.movablePos.Contains(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))))
 					{
+                        GameManager.Instance.SaveBoards();
                         CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
                         tile.OnClickTile();
                         currentPiece.MoveTo(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
@@ -98,7 +96,7 @@ public class Board : MonoBehaviour
                         isPlayer1Turn = !isPlayer1Turn;
                         changeTurn.Invoke();
                     }
-				}
+                }
 				//for (int i = 0; i < currentPiece.movablePos.Count; i++)
 				//{
 				//	Vector3Int movable = currentPiece.movablePos[i];

@@ -62,7 +62,9 @@ public class CapturedCard : MonoBehaviour
 	{
 		GameObject go = Instantiate(prefab);
 		go.transform.position = Board.Instance.tileMap.GetCellCenterWorld(pos);
-		Board.Instance.getCustomTile(pos).cardOnTile = go.GetComponent<Selectable>();
+		Selectable selectable = go.GetComponent<Selectable>();
+		Board.Instance.getCustomTile(pos).cardOnTile = selectable;
+		GameManager.Instance.allPieces.Add(selectable);
 
 		if (player == 1)
 		{
