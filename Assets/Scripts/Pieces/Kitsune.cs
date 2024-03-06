@@ -10,16 +10,21 @@ public class Kitsune : Selectable
         //Current position on board
         base.ShowDeplacements();
 
-        //Add possibles movements
-        addMovablePos(cellUpLeft());
-        addMovablePos(cellUpRight());
-        addMovablePos(cellDownLeft());
-        addMovablePos(cellDownRight());
-
         //Red tiles
         foreach (Vector2Int mov in movablePos)
         {
             Board.Instance.changeTileColor(mov, Color.red);
         }
+    }
+
+    public override void addAllMovable()
+    {
+        base.addAllMovable();
+
+        //Add possibles movements
+        addMovablePos(cellUpLeft());
+        addMovablePos(cellUpRight());
+        addMovablePos(cellDownLeft());
+        addMovablePos(cellDownRight());
     }
 }

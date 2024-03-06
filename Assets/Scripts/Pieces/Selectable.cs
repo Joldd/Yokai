@@ -60,6 +60,11 @@ public class Selectable : MonoBehaviour, IPawn
         }
     }
 
+    public virtual void addAllMovable()
+    {
+        movablePos.Clear();
+    }
+
     public virtual void MoveTo(Vector2Int pos)
     {
         Board.Instance.getCustomTile(cellPos).cardOnTile = null;
@@ -110,7 +115,9 @@ public class Selectable : MonoBehaviour, IPawn
                     }
                 }
                 Board.Instance.getCustomTile(cellPos).cardOnTile = this;
+                GameManager.Instance.UpdateAllMovablePos();
                 GameManager.Instance.CheckRepetition();
+                Debug.Log(GameManager.Instance.CheckMat(GameManager.Instance.player01, GameManager.Instance.player02));
             }
         }
     }
@@ -138,8 +145,6 @@ public class Selectable : MonoBehaviour, IPawn
         {
             Board.Instance.changeTileColor(mov, Color.white);
         }
-
-        movablePos.Clear();
     }
 
     public virtual Vector2Int cellUp()

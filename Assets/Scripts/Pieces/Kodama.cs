@@ -21,6 +21,20 @@ public class Kodama : Selectable
         base.ShowDeplacements();
 
         //Add possibles movements
+        addAllMovable();
+
+        //Red tiles
+        foreach (Vector2Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.red);
+        }
+    }
+
+    public override void addAllMovable()
+    {
+        base.addAllMovable();
+
+        //Add possibles movements
         if (tag == "Player01")
         {
             addMovablePos(cellUp());
@@ -44,12 +58,6 @@ public class Kodama : Selectable
                 addMovablePos(cellRight());
                 addMovablePos(cellUp());
             }
-        }
-
-        //Red tiles
-        foreach (Vector2Int mov in movablePos)
-        {
-            Board.Instance.changeTileColor(mov, Color.red);
         }
     }
 

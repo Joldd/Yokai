@@ -10,6 +10,20 @@ public class Koropokkuru : Selectable
         base.ShowDeplacements();
 
         //Add possibles movements
+        addAllMovable();
+
+        //Red tiles
+        foreach (Vector2Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.red);
+        }
+    }
+
+    public override void addAllMovable()
+    {
+        base.addAllMovable();
+
+        //Add possibles movements
         addMovablePos(cellUp());
         addMovablePos(cellDown());
         addMovablePos(cellRight());
@@ -18,11 +32,5 @@ public class Koropokkuru : Selectable
         addMovablePos(cellUpRight());
         addMovablePos(cellDownLeft());
         addMovablePos(cellDownRight());
-
-        //Red tiles
-        foreach (Vector2Int mov in movablePos)
-        {
-            Board.Instance.changeTileColor(mov, Color.red);
-        }
     }
 }

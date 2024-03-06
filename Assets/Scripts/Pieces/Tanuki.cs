@@ -10,15 +10,23 @@ public class Tanuki : Selectable
         base.ShowDeplacements();
 
         //Add possibles movements
-        addMovablePos(cellUp());
-        addMovablePos(cellDown());
-        addMovablePos(cellRight());
-        addMovablePos(cellLeft());
+        addAllMovable();
 
         //Red tiles
         foreach (Vector2Int mov in movablePos)
         {
             Board.Instance.changeTileColor(mov, Color.red);
         }
+    }
+
+    public override void addAllMovable()
+    {
+        base.addAllMovable();
+
+        //Add possibles movements
+        addMovablePos(cellUp());
+        addMovablePos(cellDown());
+        addMovablePos(cellRight());
+        addMovablePos(cellLeft());
     }
 }

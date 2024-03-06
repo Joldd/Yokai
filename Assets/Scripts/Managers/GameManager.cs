@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour, IGameManager
                 allPieces.Add(selectable);
             }
         }
+        UpdateAllMovablePos();
     }
 
     public void killUnit(Selectable s)
@@ -170,38 +171,52 @@ public class GameManager : MonoBehaviour, IGameManager
         }
     }
 
-    //public void CheckMat()
-    //{
-    //    bool isMat = true;
-    //    foreach (Selectable s in allPieces)
-    //    {
-    //        if(s.TryGetComponent<Koropokkuru>(out Koropokkuru koro)){
-    //            if(koro.tag == "Player01" && koro.cellPos.y == 3)
-    //            {
-    //                foreach (Selectable s1 in allPieces)
-    //                {
-    //                    if (s1.tag == "Player02")
-    //                    {
-    //                        foreach (Vector2Int move in s1.movablePos)
-    //                        {
-    //                            if (move == s.cellPos)
-    //                            {
-    //                                isMat = false;
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            else if (koro.tag == "Player02" && koro.cellPos.y == 0)
-    //            {
+    public void UpdateAllMovablePos()
+    {
+        foreach (Selectable s in allPieces)
+        {
+            s.addAllMovable();
+        }
+    }
 
-    //            }
-    //        }
-    //    }
-    //}
+    public bool CheckMat(Transform winner, Transform looser)
+    {
+        bool isMat = false;
+
+        for (int i = 0; i < winner.childCount; i++)
+        {
+            Selectable si = winner.GetChild(i).GetComponent<Selectable>();
+            if (si.TryGetComponent<Koropokkuru>(out Koropokkuru koro))
+            {
+                if (koro.tag == "Player01" && koro.cellPos.y == 3)
+                {
+                    isMat = true;
+                    for (int j = 0; j < looser.childCount; j++)
+                    {
+                        if (!isMat) break;
+
+                        Selectable sj = looser.GetChild(j).GetComponent<Selectable>();
+                        foreach (Vector2Int move in sj.movablePos)
+                        {
+                            
+                            if (koro.cellPos == move)
+                            {
+                                
+                                isMat = false;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        return isMat;
+    }
 
     //Interface IGameManager
-	public List<IPawn> GetAllPawn()
+    public List<IPawn> GetAllPawn()
 	{
         List<IPawn> pawnList = new List<IPawn>();
 		foreach (Selectable pawn in allPieces)
