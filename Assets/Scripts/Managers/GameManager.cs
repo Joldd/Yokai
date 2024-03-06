@@ -196,14 +196,41 @@ public class GameManager : MonoBehaviour, IGameManager
                         if (!isMat) break;
 
                         Selectable sj = looser.GetChild(j).GetComponent<Selectable>();
-                        foreach (Vector2Int move in sj.movablePos)
+                        if (!sj.isDead)
                         {
-                            
-                            if (koro.cellPos == move)
+                            foreach (Vector2Int move in sj.movablePos)
                             {
-                                
-                                isMat = false;
-                                break;
+
+                                if (koro.cellPos == move)
+                                {
+
+                                    isMat = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+                else if (koro.tag == "Player02" && koro.cellPos.y == 0)
+                {
+                    isMat = true;
+                    for (int j = 0; j < looser.childCount; j++)
+                    {
+                        if (!isMat) break;
+
+                        Selectable sj = looser.GetChild(j).GetComponent<Selectable>();
+                        if (!sj.isDead)
+                        {
+                            foreach (Vector2Int move in sj.movablePos)
+                            {
+
+                                if (koro.cellPos == move)
+                                {
+
+                                    isMat = false;
+                                    break;
+                                }
                             }
                         }
                     }

@@ -115,9 +115,22 @@ public class Selectable : MonoBehaviour, IPawn
                     }
                 }
                 Board.Instance.getCustomTile(cellPos).cardOnTile = this;
+
+                //Update movable pos of all pieces
                 GameManager.Instance.UpdateAllMovablePos();
+
+                //Check repetition to draw
                 GameManager.Instance.CheckRepetition();
-                Debug.Log(GameManager.Instance.CheckMat(GameManager.Instance.player01, GameManager.Instance.player02));
+                
+                //Check if Koropokkuru cross the line and won
+                if (GameManager.Instance.CheckMat(GameManager.Instance.player01, GameManager.Instance.player02))
+                {
+                    UIManager.Instance.Victory(1);
+                }
+                else if (GameManager.Instance.CheckMat(GameManager.Instance.player02, GameManager.Instance.player01))
+                {
+                    UIManager.Instance.Victory(2);
+                }
             }
         }
     }
