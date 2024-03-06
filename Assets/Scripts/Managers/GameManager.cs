@@ -239,6 +239,29 @@ public class GameManager : MonoBehaviour, IGameManager
         return isMat;
     }
 
+    public bool CheckMat(Selectable pawn)
+    {
+        bool isMat = false;
+        if(pawn is Koropokkuru)
+		{
+            Debug.Log(pawn.tag);
+
+            foreach (Selectable p in allPieces)
+			{
+                if(!p.transform.CompareTag(pawn.tag) && !p.isDead)
+				{
+                    foreach(Vector2Int mov in p.movablePos)
+					{
+                        if (mov == pawn.cellPos)
+                            isMat = true;
+					}
+				}
+			}
+		}
+
+        return isMat;
+    }
+
     //Interface IGameManager
     public List<IPawn> GetAllPawn()
 	{
@@ -274,7 +297,7 @@ public class GameManager : MonoBehaviour, IGameManager
 		switch (actionType)
         {
             case (EActionType.MOVE):
-                
+
                 break;
 
             case (EActionType.PARACHUTE):

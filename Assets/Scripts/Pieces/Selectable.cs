@@ -121,7 +121,7 @@ public class Selectable : MonoBehaviour, IPawn
 
                 //Check repetition to draw
                 GameManager.Instance.CheckRepetition();
-                
+
                 //Check if Koropokkuru cross the line and won
                 if (GameManager.Instance.CheckMat(GameManager.Instance.player01, GameManager.Instance.player02))
                 {
@@ -131,6 +131,10 @@ public class Selectable : MonoBehaviour, IPawn
                 {
                     UIManager.Instance.Victory(2);
                 }
+
+                //Check if Koropokkuru is Mat after a movement
+                if (GameManager.Instance.CheckMat(this))
+                    UIManager.Instance.Victory(this.tag == "Player01" ? 2 : 1);
             }
         }
     }
