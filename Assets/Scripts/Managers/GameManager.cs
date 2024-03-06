@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
                     Board.Instance.changeTileColor(pos, Color.white);
                     Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
                     Board.Instance.getCustomTile(pos).cardOnTile = null;
+                    Board.Instance.getCustomTile(pos).tilePosition = new Vector2Int(j, i);
                 }
             }
         }

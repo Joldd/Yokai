@@ -85,7 +85,7 @@ public class Board : MonoBehaviour
             {
 				if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
 				{
-					if (currentPiece.movablePos.Contains(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))))
+					if (currentPiece.movablePos.Contains((Vector2Int)getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))))
 					{
                         GameManager.Instance.SaveBoards();
                         CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));

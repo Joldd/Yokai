@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
+using YokaiNoMori.Interface;
+using YokaiNoMori.Enumeration;
 
-public class Selectable : MonoBehaviour
+public class Selectable : MonoBehaviour, IPawn
 {
     public Vector3Int cellPos;
-    public List<Vector3Int> movablePos = new List<Vector3Int>();
+    public List<Vector2Int> movablePos = new List<Vector2Int>();
     public bool isMoving;
     public Vector3 _target;
     public Vector3 _direction;
@@ -39,9 +41,9 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public void addMovablePos(Vector3Int pos)
+    public void addMovablePos(Vector2Int pos)
     {
-        CustomTile customTile = Board.Instance.getCustomTile(pos);
+        CustomTile customTile = Board.Instance.getCustomTile(new Vector3Int(pos.x, pos.y, 0));
         if (customTile != null)
         {
             if (customTile.cardOnTile == null)
@@ -119,43 +121,79 @@ public class Selectable : MonoBehaviour
 
     }
 
-    public virtual Vector3Int cellUp()
+    public virtual Vector2Int cellUp()
     {
-        return new Vector3Int(cellPos.x, cellPos.y + 1, 0);
+        return new Vector2Int(cellPos.x, cellPos.y + 1);
     }
 
-    public virtual Vector3Int cellDown()
+    public virtual Vector2Int cellDown()
     {
-        return new Vector3Int(cellPos.x, cellPos.y - 1, 0);
+        return new Vector2Int(cellPos.x, cellPos.y - 1);
     }
 
-    public virtual Vector3Int cellLeft()
+    public virtual Vector2Int cellLeft()
     {
-        return new Vector3Int(cellPos.x - 1, cellPos.y, 0);
+        return new Vector2Int(cellPos.x - 1, cellPos.y);
     }
 
-    public virtual Vector3Int cellRight()
+    public virtual Vector2Int cellRight()
     {
-        return new Vector3Int(cellPos.x + 1, cellPos.y, 0);
+        return new Vector2Int(cellPos.x + 1, cellPos.y);
     }
 
-    public virtual Vector3Int cellUpLeft()
+    public virtual Vector2Int cellUpLeft()
     {
-        return new Vector3Int(cellPos.x - 1, cellPos.y + 1, 0);
+        return new Vector2Int(cellPos.x - 1, cellPos.y + 1);
     }
 
-    public virtual Vector3Int cellUpRight()
+    public virtual Vector2Int cellUpRight()
     {
-        return new Vector3Int(cellPos.x + 1, cellPos.y + 1, 0);
+        return new Vector2Int(cellPos.x + 1, cellPos.y + 1);
     }
 
-    public virtual Vector3Int cellDownLeft()
+    public virtual Vector2Int cellDownLeft()
     {
-        return new Vector3Int(cellPos.x - 1, cellPos.y - 1, 0);
+        return new Vector2Int(cellPos.x - 1, cellPos.y - 1);
     }
 
-    public virtual Vector3Int cellDownRight()
+    public virtual Vector2Int cellDownRight()
     {
-        return new Vector3Int(cellPos.x + 1, cellPos.y - 1, 0);
+        return new Vector2Int(cellPos.x + 1, cellPos.y - 1);
     }
+
+    //Interface IPawn
+	public List<Vector2Int> GetDirections()
+	{
+        return movablePos;
+	}
+
+	public ICompetitor GetCurrentOwner()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public IBoardCase GetCurrentBoardCase()
+	{
+        return Board.Instance.getCustomTile(cellPos);
+
+    }
+
+	public EPawnType GetPawnType()
+	{
+        if(this is Kodama)
+		{
+            if((this as Kodama).isSamourai)
+                return EPawnType.KodamaSamurai;
+			else
+                return EPawnType.Kodama;
+        }
+        else if(this is Kitsune)
+            return EPawnType.Kitsune;
+        else if(this is Tanuki)
+            return EPawnType.Tanuki;
+        else if(this is Koropokkuru)
+            return EPawnType.Koropokkuru;
+
+		throw new System.NotImplementedException();
+	}
 }

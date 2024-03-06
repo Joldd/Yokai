@@ -8,7 +8,7 @@ public class Kodama : Selectable
     [SerializeField] private Sprite _samourai;
     [SerializeField] private Sprite _normal;
 
-    private bool isSamourai;
+    public bool isSamourai;
 
     private void Start()
     {
