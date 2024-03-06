@@ -14,15 +14,15 @@ public class GameManager : MonoBehaviour
 
     public List<Selectable> allPieces = new List<Selectable>();
 
-    public List<Vector3Int> boardCurrent = new List<Vector3Int>();
-    public List<Vector3Int> boardOneTurn = new List<Vector3Int>();
-    public List<Vector3Int> boardTwoTurn = new List<Vector3Int>();
-    public List<Vector3Int> boardThreeTurn = new List<Vector3Int>();
-    public List<Vector3Int> boardFourTurn = new List<Vector3Int>();
+    private List<Vector3Int> boardCurrent = new List<Vector3Int>();
+    private List<Vector3Int> boardOneTurn = new List<Vector3Int>();
+    private List<Vector3Int> boardTwoTurn = new List<Vector3Int>();
+    private List<Vector3Int> boardThreeTurn = new List<Vector3Int>();
+    private List<Vector3Int> boardFourTurn = new List<Vector3Int>();
 
-    public int currentTurnForRep = 0;
+    private int currentTurnForRep = 0;
 
-    public int nRep = 0;
+    private int nRep = 0;
 
 
     private void Awake()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
@@ -45,12 +46,16 @@ public class UIManager : MonoBehaviour
     {
         _victoryPanel.SetActive(true);
         _victoryText.text = " Victoire du joueur " + i + " !";
+        capturedPanel[0].gameObject.SetActive(false);
+        capturedPanel[1].gameObject.SetActive(false);
     }
 
     public void StaleMate()
     {
         _victoryPanel.SetActive(true);
         _victoryText.text = " Match nul !";
+        capturedPanel[0].gameObject.SetActive(false);
+        capturedPanel[1].gameObject.SetActive(false);
     }
 
     public void Quit()
@@ -61,6 +66,21 @@ public class UIManager : MonoBehaviour
     public void PlayAgain()
     {
         GameManager.Instance.InstanceBoard();
+        ClearCapture();
         _victoryPanel.SetActive(false);
+        capturedPanel[0].gameObject.SetActive(true);
+        capturedPanel[1].gameObject.SetActive(true);
+    }
+
+    private void ClearCapture()
+    {
+        for (int i = 0; i < capturedPanel[0].childCount; i++)
+        {
+            Destroy(capturedPanel[0].GetChild(i).gameObject);
+        }
+        for (int i = 0; i < capturedPanel[1].childCount; i++)
+        {
+            Destroy(capturedPanel[1].GetChild(i).gameObject);
+        }
     }
 }
