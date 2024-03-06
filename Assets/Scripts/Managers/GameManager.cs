@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour, IGameManager
         //Destroy(s.gameObject);
         s.isDead = true;
         //s.gameObject.SetActive(false);
-        s.gameObject.transform.position = new Vector3(100, 100, 0);
+        s.transform.position = new Vector3(100, 100, 0);
+        s.cellPos = Board.Instance.getTilePos(s.transform.position);
     }
 
     private void ClearBoard()
@@ -200,10 +201,8 @@ public class GameManager : MonoBehaviour, IGameManager
                         {
                             foreach (Vector2Int move in sj.movablePos)
                             {
-
                                 if (koro.cellPos == move)
                                 {
-
                                     isMat = false;
                                     break;
                                 }
@@ -224,10 +223,8 @@ public class GameManager : MonoBehaviour, IGameManager
                         {
                             foreach (Vector2Int move in sj.movablePos)
                             {
-
                                 if (koro.cellPos == move)
                                 {
-
                                     isMat = false;
                                     break;
                                 }

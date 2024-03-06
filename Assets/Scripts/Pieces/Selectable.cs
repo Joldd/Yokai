@@ -91,7 +91,7 @@ public class Selectable : MonoBehaviour, IPawn
             {
                 transform.position = _target;
                 isMoving = false;
-                cellPos = (Vector2Int)Board.Instance.getTilePos(transform.position);
+                cellPos = Board.Instance.getTilePos(transform.position);
                 Selectable cardOnTile = Board.Instance.getCustomTile(cellPos).cardOnTile;
                 if (cardOnTile != null)
                 {

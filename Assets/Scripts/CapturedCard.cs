@@ -94,7 +94,8 @@ public class CapturedCard : MonoBehaviour
 		Selectable selectable = currentCard.GetComponent<Selectable>();
 		selectable.isDead = false;
 		Board.Instance.getCustomTile(pos).cardOnTile = selectable;
-
-		Destroy(this.gameObject);
+		selectable.cellPos = pos;
+        GameManager.Instance.UpdateAllMovablePos();
+        Destroy(this.gameObject);
 	}
 }
