@@ -20,22 +20,9 @@ public class Koropokkuru : Selectable
         addMovablePos(cellDownRight());
 
         //Red tiles
-        foreach (Vector3Int mov in movablePos)
+        foreach (Vector2Int mov in movablePos)
         {
             Board.Instance.changeTileColor(mov, Color.red);
         }
-    }
-
-    public override void HideDeplacements()
-    {
-        base.ShowDeplacements();
-
-        //Clear color
-        foreach (Vector3Int mov in movablePos)
-        {
-            Board.Instance.changeTileColor(mov, Color.white);
-        }
-
-        movablePos.Clear();
     }
 }

@@ -66,12 +66,12 @@ public class CapturedCard : MonoBehaviour
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				Vector3Int pos = new Vector3Int(j, i, 0);
+				Vector2Int pos = new Vector2Int(j, i);
 
 				Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
 				Board.Instance.changeTileColor(pos, Color.white);
 
-				if (Board.Instance.getCustomTile(pos) != null && Board.Instance.getCustomTile(new Vector3Int(j, i, 0)).cardOnTile == null)
+				if (Board.Instance.getCustomTile(pos) != null && Board.Instance.getCustomTile(new Vector2Int(j, i)).cardOnTile == null)
 				{
 					Board.Instance.changeTileColor(pos, Color.red);
 					Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
@@ -87,10 +87,10 @@ public class CapturedCard : MonoBehaviour
 		}
 	}
 
-	private void InvokePiece(Vector3Int pos)
+	private void InvokePiece(Vector2Int pos)
 	{
 		//currentCard.gameObject.SetActive(true);
-		currentCard.transform.position = Board.Instance.tileMap.GetCellCenterWorld(pos);
+		currentCard.transform.position = Board.Instance.tileMap.GetCellCenterWorld((Vector3Int)pos);
 		Selectable selectable = currentCard.GetComponent<Selectable>();
 		selectable.isDead = false;
 		Board.Instance.getCustomTile(pos).cardOnTile = selectable;

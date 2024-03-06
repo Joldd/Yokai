@@ -7,7 +7,7 @@ using YokaiNoMori.Enumeration;
 
 public class Selectable : MonoBehaviour, IPawn
 {
-    public Vector3Int cellPos;
+    public Vector2Int cellPos;
     public List<Vector2Int> movablePos = new List<Vector2Int>();
     public bool isMoving;
     public Vector3 _target;
@@ -46,7 +46,7 @@ public class Selectable : MonoBehaviour, IPawn
 
     public void addMovablePos(Vector2Int pos)
     {
-        CustomTile customTile = Board.Instance.getCustomTile(new Vector3Int(pos.x, pos.y, 0));
+        CustomTile customTile = Board.Instance.getCustomTile(new Vector2Int(pos.x, pos.y));
         if (customTile != null)
         {
             if (customTile.cardOnTile == null)
@@ -60,11 +60,11 @@ public class Selectable : MonoBehaviour, IPawn
         }
     }
 
-    public virtual void MoveTo(Vector3Int pos)
+    public virtual void MoveTo(Vector2Int pos)
     {
         Board.Instance.getCustomTile(cellPos).cardOnTile = null;
         isMoving = true;
-        _target = Board.Instance.tileMap.GetCellCenterWorld(pos);
+        _target = Board.Instance.tileMap.GetCellCenterWorld((Vector3Int)pos);
         _direction = _target - transform.position;
     }
 
@@ -86,7 +86,7 @@ public class Selectable : MonoBehaviour, IPawn
             {
                 transform.position = _target;
                 isMoving = false;
-                cellPos = Board.Instance.getTilePos(transform.position);
+                cellPos = (Vector2Int)Board.Instance.getTilePos(transform.position);
                 Selectable cardOnTile = Board.Instance.getCustomTile(cellPos).cardOnTile;
                 if (cardOnTile != null)
                 {
@@ -117,13 +117,13 @@ public class Selectable : MonoBehaviour, IPawn
 
     public virtual void ShowDeplacements()
     {
-        cellPos = Board.Instance.getTilePos(transform.position);
+        cellPos = (Vector2Int)Board.Instance.getTilePos(transform.position);
 
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                Vector3Int pos = new Vector3Int(j, i, 0);
+                Vector2Int pos = new Vector2Int(j, i);
 
                 Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
                 Board.Instance.changeTileColor(pos, Color.white);
@@ -133,7 +133,13 @@ public class Selectable : MonoBehaviour, IPawn
 
     public virtual void HideDeplacements()
     {
+        //Clear color
+        foreach (Vector2Int mov in movablePos)
+        {
+            Board.Instance.changeTileColor(mov, Color.white);
+        }
 
+        movablePos.Clear();
     }
 
     public virtual Vector2Int cellUp()

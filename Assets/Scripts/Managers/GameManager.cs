@@ -18,11 +18,11 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public List<Selectable> allPieces = new List<Selectable>();
 
-    private List<Vector3Int> boardCurrent = new List<Vector3Int>();
-    private List<Vector3Int> boardOneTurn = new List<Vector3Int>();
-    private List<Vector3Int> boardTwoTurn = new List<Vector3Int>();
-    private List<Vector3Int> boardThreeTurn = new List<Vector3Int>();
-    private List<Vector3Int> boardFourTurn = new List<Vector3Int>();
+    private List<Vector2Int> boardCurrent = new List<Vector2Int>();
+    private List<Vector2Int> boardOneTurn = new List<Vector2Int>();
+    private List<Vector2Int> boardTwoTurn = new List<Vector2Int>();
+    private List<Vector2Int> boardThreeTurn = new List<Vector2Int>();
+    private List<Vector2Int> boardFourTurn = new List<Vector2Int>();
 
     private int currentTurnForRep = 0;
 
@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour, IGameManager
                 {
                     go.transform.SetParent(player01);
                     go.transform.tag = go.transform.parent.tag;
-                    go.transform.position = tileMap.GetCellCenterWorld(gp.pieceCoord);
+                    go.transform.position = tileMap.GetCellCenterWorld((Vector3Int)gp.pieceCoord);
 
                     //Board.Instance.currentBoard[gp.pieceCoord.y].currentRowBoard[gp.pieceCoord.x] = 1;
-                    Board.Instance.tileMap.SetTileFlags(gp.pieceCoord, TileFlags.None);
+                    Board.Instance.tileMap.SetTileFlags((Vector3Int)gp.pieceCoord, TileFlags.None);
                     Board.Instance.getCustomTile(gp.pieceCoord).cardOnTile = selectable;
                     selectable.cellPos = gp.pieceCoord;
                 }
@@ -73,13 +73,13 @@ public class GameManager : MonoBehaviour, IGameManager
                 {
                     go.transform.SetParent(player02);
                     go.transform.tag = go.transform.parent.tag;
-                    go.transform.position = tileMap.GetCellCenterWorld(new Vector3Int(2, 3, 0) - gp.pieceCoord);
+                    go.transform.position = tileMap.GetCellCenterWorld((Vector3Int)(new Vector2Int(2, 3) - gp.pieceCoord));
 
                     //Board.Instance.currentBoard[3 - gp.pieceCoord.y].currentRowBoard[2 - gp.pieceCoord.x] = 2;
-                    Board.Instance.tileMap.SetTileFlags(gp.pieceCoord, TileFlags.None);
-                    Board.Instance.getCustomTile(new Vector3Int(2, 3, 0) - gp.pieceCoord).cardOnTile = selectable;
+                    Board.Instance.tileMap.SetTileFlags((Vector3Int)gp.pieceCoord, TileFlags.None);
+                    Board.Instance.getCustomTile(new Vector2Int(2, 3) - gp.pieceCoord).cardOnTile = selectable;
                     go.transform.eulerAngles = new Vector3(0, 0, 180);
-                    selectable.cellPos = new Vector3Int(2, 3, 0) - gp.pieceCoord;
+                    selectable.cellPos = new Vector2Int(2, 3) - gp.pieceCoord;
                 }
                 allPieces.Add(selectable);
             }
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour, IGameManager
         {
             for (int j = 0; j < 3; j++)
             {
-                Vector3Int pos = new Vector3Int(j, i, 0);
+                Vector2Int pos = new Vector2Int(j, i);
                 if (Board.Instance.getCustomTile(pos) != null)
                 {
                     Board.Instance.changeTileColor(pos, Color.white);
@@ -120,9 +120,9 @@ public class GameManager : MonoBehaviour, IGameManager
         allPieces.Clear();
     }
 
-    private List<Vector3Int> getBoard(List<Selectable> pieces)
+    private List<Vector2Int> getBoard(List<Selectable> pieces)
     {
-        List<Vector3Int> board = new List<Vector3Int>();
+        List<Vector2Int> board = new List<Vector2Int>();
         foreach (Selectable s in pieces)
         {
             board.Add(s.cellPos);
@@ -170,6 +170,36 @@ public class GameManager : MonoBehaviour, IGameManager
         }
     }
 
+    //public void CheckMat()
+    //{
+    //    bool isMat = true;
+    //    foreach (Selectable s in allPieces)
+    //    {
+    //        if(s.TryGetComponent<Koropokkuru>(out Koropokkuru koro)){
+    //            if(koro.tag == "Player01" && koro.cellPos.y == 3)
+    //            {
+    //                foreach (Selectable s1 in allPieces)
+    //                {
+    //                    if (s1.tag == "Player02")
+    //                    {
+    //                        foreach (Vector2Int move in s1.movablePos)
+    //                        {
+    //                            if (move == s.cellPos)
+    //                            {
+    //                                isMat = false;
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            else if (koro.tag == "Player02" && koro.cellPos.y == 0)
+    //            {
+
+    //            }
+    //        }
+    //    }
+    //}
+
     //Interface IGameManager
 	public List<IPawn> GetAllPawn()
 	{
@@ -189,7 +219,7 @@ public class GameManager : MonoBehaviour, IGameManager
         {
             for (int j = 0; j < 3; j++)
             {
-                Vector3Int pos = new Vector3Int(j, i, 0);
+                Vector2Int pos = new Vector2Int(j, i);
 
                 CustomTile ct = Board.Instance.getCustomTile(pos);
                 if (ct != null)
@@ -202,7 +232,18 @@ public class GameManager : MonoBehaviour, IGameManager
 
 	public void DoAction(IPawn pawnTarget, Vector2Int position, EActionType actionType)
 	{
-		throw new System.NotImplementedException();
+		switch (actionType)
+        {
+            case (EActionType.MOVE):
+                
+                break;
+
+            case (EActionType.PARACHUTE):
+
+                break;
+            default:
+                break;
+        }
 	}
 }
 
@@ -210,5 +251,5 @@ public class GameManager : MonoBehaviour, IGameManager
 public class GamePiece
 {
     public GameObject piecePrefab;
-    public Vector3Int pieceCoord;
+    public Vector2Int pieceCoord;
 }

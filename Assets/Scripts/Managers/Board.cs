@@ -41,24 +41,24 @@ public class Board : MonoBehaviour
         });
     }
 
-    public Vector3Int getTilePos(Vector3 pos)
+    public Vector2Int getTilePos(Vector3 pos)
     {
-        return tileMap.WorldToCell(pos);
+        return (Vector2Int)tileMap.WorldToCell(pos);
     }
 
-    public void changeTileColor(Vector3Int pos, Color color)
+    public void changeTileColor(Vector2Int pos, Color color)
     {
         if(getCustomTile(pos) != null)
 		{
-            tileMap.SetTileFlags(pos, TileFlags.None);
-            tileMap.SetColor(pos, color);
+            tileMap.SetTileFlags((Vector3Int)pos, TileFlags.None);
+            tileMap.SetColor((Vector3Int)pos, color);
         }
     }
 
-    public CustomTile getCustomTile(Vector3Int pos)
+    public CustomTile getCustomTile(Vector2Int pos)
 	{
-        if (tileMap.GetTile(pos) is CustomTile)
-            return (CustomTile)tileMap.GetTile(pos);
+        if (tileMap.GetTile((Vector3Int)pos) is CustomTile)
+            return (CustomTile)tileMap.GetTile((Vector3Int)pos);
         return null;
     }
 
@@ -73,9 +73,9 @@ public class Board : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(0))
 		{
-			if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
+			if (tileMap.GetTile((Vector3Int)getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
 			{
-				CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
+				CustomTile tile = (CustomTile)tileMap.GetTile((Vector3Int)getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
 
 				tile.OnClickTile();
 			}
@@ -85,12 +85,12 @@ public class Board : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-				if (tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
+				if (tileMap.GetTile((Vector3Int)getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))) is CustomTile)
 				{
 					if (currentPiece.movablePos.Contains((Vector2Int)getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition))))
 					{
                         GameManager.Instance.SaveBoards();
-                        CustomTile tile = (CustomTile)tileMap.GetTile(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
+                        CustomTile tile = (CustomTile)tileMap.GetTile((Vector3Int)getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
                         tile.OnClickTile();
                         currentPiece.MoveTo(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
                         currentPiece.HideDeplacements();
@@ -120,7 +120,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                Vector3Int pos = new Vector3Int(j, i, 0);
+                Vector2Int pos = new Vector2Int(j, i);
                 if (getCustomTile(pos) != null)
                 {
                     changeTileColor(pos, Color.white);

@@ -47,26 +47,13 @@ public class Kodama : Selectable
         }
 
         //Red tiles
-        foreach (Vector3Int mov in movablePos)
+        foreach (Vector2Int mov in movablePos)
         {
             Board.Instance.changeTileColor(mov, Color.red);
         }
     }
 
-    public override void HideDeplacements()
-    {
-        base.ShowDeplacements();
-
-        //Clear color
-        foreach (Vector3Int mov in movablePos)
-        {
-            Board.Instance.changeTileColor(mov, Color.white);
-        }
-
-        movablePos.Clear();
-    }
-
-    public override void MoveTo(Vector3Int pos)
+    public override void MoveTo(Vector2Int pos)
     {
         base.MoveTo(pos);
         if ((tag == "Player01" && pos.y == 3) || (tag == "Player02" && pos.y == 0))
