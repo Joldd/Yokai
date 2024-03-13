@@ -47,7 +47,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 		//DrawBoard(tempBoard);
 
-		int i = Minimax(1, true, tempBoard);
+		int i = Minimax(2, true, tempBoard);
 	}
 
 	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp)
@@ -61,13 +61,18 @@ public class MinimaxAlgorithm : MonoBehaviour
 			int maxEval = System.Int32.MinValue;
 			foreach(TempPawn pawn in myTempBoard)
 			{
-				myTempBoard = CopyList(temp);
+				//myTempBoard = CopyList(temp);
 				if (pawn.isEnemy)
 				{
 					foreach(Vector2Int move in pawn.movablePos)
 					{
 						List<TempPawn> temp2 = CopyList(myTempBoard);
-						temp2 = Move(pawn.currentPos, move, myTempBoard);
+						temp2 = Move(pawn.currentPos, move, temp2);
+
+						foreach (TempPawn p in temp2)
+						{
+							p.SetMovablePos(temp2);
+						}
 
 						int eval = Minimax(depth - 1, false, temp2);
 						maxEval = Mathf.Max(maxEval, eval);
@@ -81,13 +86,18 @@ public class MinimaxAlgorithm : MonoBehaviour
 			int minEval = System.Int32.MaxValue;
 			foreach (TempPawn pawn in myTempBoard)
 			{
-				myTempBoard = CopyList(temp);
+				//myTempBoard = CopyList(temp);
 				if (!pawn.isEnemy)
 				{
 					foreach (Vector2Int move in pawn.movablePos)
 					{
 						List<TempPawn> temp2 = CopyList(myTempBoard);
-						temp2 = Move(pawn.currentPos, move, myTempBoard);
+						temp2 = Move(pawn.currentPos, move, temp2);
+
+						foreach (TempPawn p in temp2)
+						{
+							p.SetMovablePos(temp2);
+						}
 
 						int eval = Minimax(depth - 1, false, temp2);
 						minEval = Mathf.Min(minEval, eval);
@@ -106,9 +116,10 @@ public class MinimaxAlgorithm : MonoBehaviour
 		{
 			if(temp[i].currentPos == pawnMove)
 			{
-				temp.RemoveAt(i);
+				temp[i] = null;
 			}
 		}
+		temp.RemoveAll(x => x == null);
 
 		temp2 = temp;
 
@@ -184,7 +195,7 @@ public class TempPawn
 		this.pawnType = pawnType;
 		this.isEnemy = isEnemy;
 		this.currentPos = currentPos;
-		this.movablePos = movablePos;
+		this.movablePos = new List<Vector2Int>(movablePos);
 	}
 
 	public void SetMovablePos(List<TempPawn> tempBoard)
