@@ -16,7 +16,7 @@ public class Selectable : MonoBehaviour, IPawn
     public bool isDead = false;
 
     [SerializeField] private GameObject capturedPrefab;
-    public int cardType;
+    public PawnType cardType;
 
     public CapturedCard capturedCard;
 

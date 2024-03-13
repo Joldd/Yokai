@@ -143,11 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2d49c3185b77b49af63eac0e3272e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPos: {x: 0, y: 0, z: 0}
+  cellPos: {x: 0, y: 0}
   movablePos: []
   isMoving: 0
   _target: {x: 0, y: 0, z: 0}
   _direction: {x: 0, y: 0, z: 0}
   _speed: 3
+  isDead: 0
   capturedPrefab: {fileID: 8178913138017256336, guid: 69d541107d113bd49bc205de42fe5464, type: 3}
-  cardType: 1
+  cardType: 900
