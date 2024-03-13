@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 public enum PawnType
 {
@@ -24,14 +26,14 @@ public class MinimaxAlgorithm : MonoBehaviour
 		{
 			if(pawn.transform.CompareTag("Player01") && !pawn.isDead)
 			{
-				TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos, tempBoard);
+				TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos);
 				if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
 
 				tempBoard.Add(tempPawn);
 			}
 			else if (pawn.transform.CompareTag("Player02") && !pawn.isDead)
 			{
-				TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos, tempBoard);
+				TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos);
 				if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
 
 				tempBoard.Add(tempPawn);
@@ -43,22 +45,33 @@ public class MinimaxAlgorithm : MonoBehaviour
 			pawn.SetMovablePos(tempBoard);
 		}
 
-		//int i = Minimax(5, true);
+		//DrawBoard(tempBoard);
+
+		int i = Minimax(1, true, tempBoard);
 	}
 
-	private int Minimax(int depth, bool maximizingPlayer)
+	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp)
 	{
+		List<TempPawn> myTempBoard = CopyList(temp);
+		DrawBoard(myTempBoard);
 		if (depth == 0 /* OR if game is over*/) return 0;
 
 		if (maximizingPlayer)
 		{
 			int maxEval = System.Int32.MinValue;
-			foreach(TempPawn pawn in tempBoard)
+			foreach(TempPawn pawn in myTempBoard)
 			{
+				myTempBoard = CopyList(temp);
 				if (pawn.isEnemy)
 				{
-					int eval = Minimax(depth - 1, false);
-					maxEval = Mathf.Max(maxEval, eval);
+					foreach(Vector2Int move in pawn.movablePos)
+					{
+						List<TempPawn> temp2 = CopyList(myTempBoard);
+						temp2 = Move(pawn.currentPos, move, myTempBoard);
+
+						int eval = Minimax(depth - 1, false, temp2);
+						maxEval = Mathf.Max(maxEval, eval);
+					}
 				}
 			}
 			return maxEval;
@@ -66,16 +79,88 @@ public class MinimaxAlgorithm : MonoBehaviour
 		else
 		{
 			int minEval = System.Int32.MaxValue;
-			foreach (TempPawn pawn in tempBoard)
+			foreach (TempPawn pawn in myTempBoard)
 			{
+				myTempBoard = CopyList(temp);
 				if (!pawn.isEnemy)
 				{
-					int eval = Minimax(depth - 1, false);
-					minEval = Mathf.Min(minEval, eval);
+					foreach (Vector2Int move in pawn.movablePos)
+					{
+						List<TempPawn> temp2 = CopyList(myTempBoard);
+						temp2 = Move(pawn.currentPos, move, myTempBoard);
+
+						int eval = Minimax(depth - 1, false, temp2);
+						minEval = Mathf.Min(minEval, eval);
+					}
 				}
 			}
 			return minEval;
 		}
+	}
+
+	private List<TempPawn> Move(Vector2Int pawnPos, Vector2Int pawnMove, List<TempPawn> myTempBoard)
+	{
+		List<TempPawn> temp = CopyList(myTempBoard);
+		List<TempPawn> temp2 = CopyList(myTempBoard);
+		for (int i = 0; i < temp2.Count; i++)
+		{
+			if(temp[i].currentPos == pawnMove)
+			{
+				temp.RemoveAt(i);
+			}
+		}
+
+		temp2 = temp;
+
+		foreach(TempPawn pawn in temp2)
+		{
+			if(pawn.currentPos == pawnPos)
+			{
+				pawn.currentPos = pawnMove;
+			}
+		}
+
+		return temp2;
+	}
+
+	private void DrawBoard(List<TempPawn> board)
+	{
+		string boardDisplay = "\n";
+		for (int i = 3; i >= 0; i--)
+		{
+			for (int j = 0; j <= 2; j++)
+			{
+				string s = "0 |";
+				foreach (TempPawn temp in board)
+				{
+					if (temp.currentPos == new Vector2Int(j, i))
+					{
+						if (temp.isEnemy) s = ((int)temp.pawnType).ToString() + ":X |";
+						else s = ((int)temp.pawnType).ToString() + ":O |";
+
+					}
+				}
+				boardDisplay += s;
+			}
+			boardDisplay += "\n";
+		}
+		Debug.Log(boardDisplay);
+	}
+
+	List<TempPawn> CopyList(List<TempPawn> originalList)
+	{
+		List<TempPawn> copiedList = new List<TempPawn>();
+
+		foreach (TempPawn originalObject in originalList)
+		{
+			// Create a new instance of CustomObject and copy the values
+			TempPawn copiedObject = new TempPawn(originalObject.pawnType, originalObject.isEnemy, originalObject.currentPos, originalObject.movablePos);
+
+			// Add the copied object to the new list
+			copiedList.Add(copiedObject);
+		}
+
+		return copiedList;
 	}
 }
 
@@ -87,11 +172,19 @@ public class TempPawn
 	public Vector2Int currentPos;
 	public List<Vector2Int> movablePos = new List<Vector2Int>();
 
-	public TempPawn(PawnType pawnType, bool isEnemy, Vector2Int currentPos, List<TempPawn> tempBoard)
+	public TempPawn(PawnType pawnType, bool isEnemy, Vector2Int currentPos)
 	{
 		this.pawnType = pawnType;
 		this.isEnemy = isEnemy;
 		this.currentPos = currentPos;
+	}
+
+	public TempPawn(PawnType pawnType, bool isEnemy, Vector2Int currentPos, List<Vector2Int> movablePos)
+	{
+		this.pawnType = pawnType;
+		this.isEnemy = isEnemy;
+		this.currentPos = currentPos;
+		this.movablePos = movablePos;
 	}
 
 	public void SetMovablePos(List<TempPawn> tempBoard)
@@ -155,11 +248,5 @@ public class TempPawn
 
 		movablePos.Clear();
 		movablePos = new List<Vector2Int>(tempMovablePos);
-	}
-
-	public void Move()
-	{
-		//TO DO movement
-		//TO DO killing
 	}
 }
