@@ -47,21 +47,32 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 		//DrawBoard(tempBoard);
 
-		int i = Minimax(2, true, tempBoard);
+		int i = Minimax(6, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
+		Debug.Log(i);
 	}
 
-	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp)
+	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, int alpha, int beta)
 	{
 		List<TempPawn> myTempBoard = CopyList(temp);
 		DrawBoard(myTempBoard);
-		if (depth == 0 /* OR if game is over*/) return 0;
+		if (depth == 0 /* OR if game is over*/)
+		{
+			int total = 0;
+			Debug.Log("Count Board :" + myTempBoard.Count);
+			foreach (TempPawn pawn in myTempBoard)
+			{
+				total += (int)pawn.pawnType * (pawn.isEnemy ? -1 : 1);
+			}
+			Debug.Log("Total: " + total);
+			return total;
+		}
 
 		if (maximizingPlayer)
 		{
 			int maxEval = System.Int32.MinValue;
 			foreach(TempPawn pawn in myTempBoard)
 			{
-				//myTempBoard = CopyList(temp);
+				myTempBoard = CopyList(temp);
 				if (pawn.isEnemy)
 				{
 					foreach(Vector2Int move in pawn.movablePos)
@@ -74,10 +85,13 @@ public class MinimaxAlgorithm : MonoBehaviour
 							p.SetMovablePos(temp2);
 						}
 
-						int eval = Minimax(depth - 1, false, temp2);
+						int eval = Minimax(depth - 1, false, temp2, alpha, beta);
 						maxEval = Mathf.Max(maxEval, eval);
+						alpha = Mathf.Max(alpha, eval);
+						if (beta <= alpha) break;
 					}
 				}
+				if (beta <= alpha) break;
 			}
 			return maxEval;
 		}
@@ -86,7 +100,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 			int minEval = System.Int32.MaxValue;
 			foreach (TempPawn pawn in myTempBoard)
 			{
-				//myTempBoard = CopyList(temp);
+				myTempBoard = CopyList(temp);
 				if (!pawn.isEnemy)
 				{
 					foreach (Vector2Int move in pawn.movablePos)
@@ -99,10 +113,13 @@ public class MinimaxAlgorithm : MonoBehaviour
 							p.SetMovablePos(temp2);
 						}
 
-						int eval = Minimax(depth - 1, false, temp2);
+						int eval = Minimax(depth - 1, true, temp2, alpha, beta);
 						minEval = Mathf.Min(minEval, eval);
+						beta = Mathf.Min(beta, eval);
+						if (beta <= alpha) break;
 					}
 				}
+				if (beta <= alpha) break;
 			}
 			return minEval;
 		}
