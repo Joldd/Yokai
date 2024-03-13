@@ -18,6 +18,8 @@ public class Selectable : MonoBehaviour, IPawn
     [SerializeField] private GameObject capturedPrefab;
     public int cardType;
 
+    public CapturedCard capturedCard;
+
 	public virtual void OnMouseDown()
     {
         if (GameManager.Instance.gamePaused) return;

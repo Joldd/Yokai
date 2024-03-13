@@ -29,6 +29,7 @@ public class CapturedCard : MonoBehaviour
 
 	public void SetCapturedPiece(Selectable card, int player)
 	{
+		card.capturedCard = this;
 		this.currentCard = card;
 		this.player = player;
 
@@ -77,8 +78,6 @@ public class CapturedCard : MonoBehaviour
 					Board.Instance.getCustomTile(pos).clickAction.RemoveAllListeners();
 					Board.Instance.getCustomTile(pos).clickAction.AddListener(() => {
 						InvokePiece(pos);
-						Board.Instance.ClearTile();
-						Board.Instance.changeTurn.Invoke();
 					});
 
 				}
@@ -86,7 +85,7 @@ public class CapturedCard : MonoBehaviour
 		}
 	}
 
-	private void InvokePiece(Vector2Int pos)
+	public void InvokePiece(Vector2Int pos)
 	{
 		//currentCard.gameObject.SetActive(true);
 		currentCard.transform.position = Board.Instance.tileMap.GetCellCenterWorld((Vector3Int)pos);
@@ -96,5 +95,7 @@ public class CapturedCard : MonoBehaviour
 		selectable.cellPos = pos;
         GameManager.Instance.UpdateAllMovablePos();
         Destroy(this.gameObject);
-	}
+        Board.Instance.ClearTile();
+        Board.Instance.changeTurn.Invoke();
+    }
 }

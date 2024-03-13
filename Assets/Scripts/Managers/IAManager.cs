@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using YokaiNoMori.Interface;
 
 public class IAManager : MonoBehaviour
 {
     public static IAManager Instance { get; private set; }
 
     private List<Selectable> L_Pawns = new List<Selectable>();
+    private List<CapturedCard> L_CapturedPawns = new List<CapturedCard>();
+
 
     public bool canPlay;
 
@@ -23,25 +26,21 @@ public class IAManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Board.Instance.changeTurn.AddListener(() =>
-        {
-            if (!Board.Instance.isPlayer1Turn)
-            {
-                canPlay = true;
-            }
-        });
-    }
-
     private void Update()
     {
         if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA && canPlay)
         {
-            Selectable myPawn = PickMovablePawn();
-
-            int r = Random.Range(0, myPawn.movablePos.Count);
-            myPawn.MoveTo(myPawn.movablePos[r]);
+            if (ChooseMove()){
+                Selectable myPawn = PickMovablePawn();
+                int r = Random.Range(0, myPawn.movablePos.Count);
+                myPawn.MoveTo(myPawn.movablePos[r]);
+            }
+            else
+            {
+                int randomPawn = Random.Range(0,L_CapturedPawns.Count);
+                int randomPos = Random.Range(0, Board.Instance.GetFreePos().Count);
+                L_CapturedPawns[randomPawn].InvokePiece(Board.Instance.GetFreePos()[randomPos]);
+            }
             canPlay = false;
         }
     }
@@ -75,6 +74,41 @@ public class IAManager : MonoBehaviour
         {
             s = PickMovablePawn();
             return s;
+        }
+    }
+
+    private List<CapturedCard> GetCapturedCards()
+    {
+        L_CapturedPawns.Clear();
+        List<Selectable> currentPawns = GetPawns();
+        foreach (Selectable s in currentPawns)
+        {
+            if (s.isDead)
+            {
+                L_CapturedPawns.Add(s.capturedCard);
+            }
+        }
+        return L_CapturedPawns;
+    }
+
+    private bool ChooseMove()
+    {
+        GetCapturedCards();
+        if (L_CapturedPawns.Count <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            int r = Random.Range(0, 2);
+            if (r == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class Board : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class Board : MonoBehaviour
         changeTurn.AddListener(() =>
         {
             isPlayer1Turn = !isPlayer1Turn;
+            if (!Board.Instance.isPlayer1Turn)
+            {
+                IAManager.Instance.canPlay = true;
+            }
             uiManager.UpdatePlayerTurn();
         });
     }
@@ -127,6 +132,23 @@ public class Board : MonoBehaviour
                 }
             }
         }
+    }
+
+    public List<Vector2Int> GetFreePos()
+    {
+        List<Vector2Int> myList = new List<Vector2Int>();
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Vector2Int pos = new Vector2Int(j, i);
+                if (Board.Instance.getCustomTile(pos) != null && Board.Instance.getCustomTile(new Vector2Int(j, i)).cardOnTile == null)
+                {
+                    myList.Add(pos);
+                }
+            }
+        }
+        return myList;
     }
 }
 
