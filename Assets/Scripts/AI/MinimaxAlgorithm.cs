@@ -47,7 +47,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 		//DrawBoard(tempBoard);
 
-		int i = Minimax(6, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
+		int i = Minimax(5, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
 		Debug.Log(i);
 	}
 
@@ -73,7 +73,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 			foreach(TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-				if (pawn.isEnemy)
+				if (!pawn.isEnemy)
 				{
 					foreach(Vector2Int move in pawn.movablePos)
 					{
@@ -101,7 +101,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 			foreach (TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-				if (!pawn.isEnemy)
+				if (pawn.isEnemy)
 				{
 					foreach (Vector2Int move in pawn.movablePos)
 					{

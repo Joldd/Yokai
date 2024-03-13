@@ -137,8 +137,8 @@ public class Selectable : MonoBehaviour, IPawn
                 }
 
                 //Check if Koropokkuru is Mat after a movement
-                if (GameManager.Instance.CheckMat(this))
-                    UIManager.Instance.Victory(this.tag == "Player01" ? 2 : 1);
+                //if (GameManager.Instance.CheckMat(this))
+                //    UIManager.Instance.Victory(this.tag == "Player01" ? 2 : 1);
 
                 //Next turn
                 Board.Instance.changeTurn.Invoke();
