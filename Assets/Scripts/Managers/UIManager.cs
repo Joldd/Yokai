@@ -96,6 +96,7 @@ public class UIManager : MonoBehaviour
     {
         Board.Instance.isPlayer1Turn = true;
         GameManager.Instance.InstanceBoard();
+        GameManager.Instance.isIA = false;
         ClearCapture();
         _victoryPanel.SetActive(false);
         _gamePanel.SetActive(true);
@@ -106,6 +107,7 @@ public class UIManager : MonoBehaviour
     public void PlayIA()
     {
         Board.Instance.isPlayer1Turn = true;
+        GameManager.Instance.isIA = true;
         GameManager.Instance.InstanceBoard();
         ClearCapture();
         _victoryPanel.SetActive(false);

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7841929049759871341}
   - component: {fileID: 2419965652185122814}
+  - component: {fileID: 5046768248409389637}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,10 +48,27 @@ MonoBehaviour:
   tileMap: {fileID: 0}
   gamePieces:
   - piecePrefab: {fileID: 3656327315072551848, guid: 5a310569214737d43b23c4179a6d82e2, type: 3}
-    pieceCoord: {x: 0, y: 0, z: 0}
+    pieceCoord: {x: 0, y: 0}
   - piecePrefab: {fileID: 3656327315072551848, guid: 5b38c8b6780abf34fa793604fb29589a, type: 3}
-    pieceCoord: {x: 1, y: 0, z: 0}
+    pieceCoord: {x: 1, y: 0}
   - piecePrefab: {fileID: 3656327315072551848, guid: 2d421b03997b67842abd67d4f9201e67, type: 3}
-    pieceCoord: {x: 2, y: 0, z: 0}
+    pieceCoord: {x: 2, y: 0}
   - piecePrefab: {fileID: 3656327315072551848, guid: 1e600a24d9d7a1643a4e6ce67f252d43, type: 3}
-    pieceCoord: {x: 1, y: 1, z: 0}
+    pieceCoord: {x: 1, y: 1}
+  player01: {fileID: 0}
+  player02: {fileID: 0}
+  allPieces: []
+  gamePaused: 1
+  isIA: 0
+--- !u!114 &5046768248409389637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014498174792507829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b167f40f9d34fa64294d1839b47bc534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

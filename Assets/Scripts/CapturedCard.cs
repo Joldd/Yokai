@@ -78,7 +78,6 @@ public class CapturedCard : MonoBehaviour
 					Board.Instance.getCustomTile(pos).clickAction.AddListener(() => {
 						InvokePiece(pos);
 						Board.Instance.ClearTile();
-						Board.Instance.isPlayer1Turn = !Board.Instance.isPlayer1Turn;
 						Board.Instance.changeTurn.Invoke();
 					});
 

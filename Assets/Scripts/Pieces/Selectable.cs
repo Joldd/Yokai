@@ -26,6 +26,8 @@ public class Selectable : MonoBehaviour, IPawn
 
         if (tag == "Player02" && Board.Instance.isPlayer1Turn) return;
 
+        if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA) return;
+
         if (Board.Instance.currentPiece != null)
         {
             Board.Instance.currentPiece.HideDeplacements();
@@ -135,6 +137,9 @@ public class Selectable : MonoBehaviour, IPawn
                 //Check if Koropokkuru is Mat after a movement
                 if (GameManager.Instance.CheckMat(this))
                     UIManager.Instance.Victory(this.tag == "Player01" ? 2 : 1);
+
+                //Next turn
+                Board.Instance.changeTurn.Invoke();
             }
         }
     }

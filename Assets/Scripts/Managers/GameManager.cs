@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public bool gamePaused = true;
 
+    public bool isIA;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -244,8 +246,6 @@ public class GameManager : MonoBehaviour, IGameManager
         bool isMat = false;
         if(pawn is Koropokkuru)
 		{
-            Debug.Log(pawn.tag);
-
             foreach (Selectable p in allPieces)
 			{
                 if(!p.transform.CompareTag(pawn.tag) && !p.isDead)

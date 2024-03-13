@@ -37,6 +37,7 @@ public class Board : MonoBehaviour
 
         changeTurn.AddListener(() =>
         {
+            isPlayer1Turn = !isPlayer1Turn;
             uiManager.UpdatePlayerTurn();
         });
     }
@@ -95,8 +96,6 @@ public class Board : MonoBehaviour
                         currentPiece.MoveTo(getTilePos(_camera.ScreenToWorldPoint(Input.mousePosition)));
                         currentPiece.HideDeplacements();
                         currentPiece = null;
-                        isPlayer1Turn = !isPlayer1Turn;
-                        changeTurn.Invoke();
                     }
                 }
 				//for (int i = 0; i < currentPiece.movablePos.Count; i++)
