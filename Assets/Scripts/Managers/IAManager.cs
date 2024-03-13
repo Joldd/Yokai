@@ -11,8 +11,9 @@ public class IAManager : MonoBehaviour
     private List<Selectable> L_Pawns = new List<Selectable>();
     private List<CapturedCard> L_CapturedPawns = new List<CapturedCard>();
 
-
     public bool canPlay;
+
+    private MinimaxAlgorithm minimaxAlgorithm;
 
     private void Awake()
     {
@@ -26,21 +27,35 @@ public class IAManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        minimaxAlgorithm = GetComponent<MinimaxAlgorithm>();
+    }
+
     private void Update()
     {
+        ////////////////////// RANDOM IA  /////////////////////////////////////////////
+        //if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA && canPlay)
+        //{
+        //    if (ChooseMove()){
+        //        Selectable myPawn = PickMovablePawn();
+        //        int r = Random.Range(0, myPawn.movablePos.Count);
+        //        myPawn.MoveTo(myPawn.movablePos[r]);
+        //    }
+        //    else
+        //    {
+        //        int randomPawn = Random.Range(0,L_CapturedPawns.Count);
+        //        int randomPos = Random.Range(0, Board.Instance.GetFreePos().Count);
+        //        L_CapturedPawns[randomPawn].InvokePiece(Board.Instance.GetFreePos()[randomPos]);
+        //    }
+        //    canPlay = false;
+        //}
+
+        ////////////////////// MINIMAX IA /////////////////////////////////////////////
         if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA && canPlay)
         {
-            if (ChooseMove()){
-                Selectable myPawn = PickMovablePawn();
-                int r = Random.Range(0, myPawn.movablePos.Count);
-                myPawn.MoveTo(myPawn.movablePos[r]);
-            }
-            else
-            {
-                int randomPawn = Random.Range(0,L_CapturedPawns.Count);
-                int randomPos = Random.Range(0, Board.Instance.GetFreePos().Count);
-                L_CapturedPawns[randomPawn].InvokePiece(Board.Instance.GetFreePos()[randomPos]);
-            }
+            minimaxAlgorithm.Think();
+            GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
             canPlay = false;
         }
     }

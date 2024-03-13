@@ -16,7 +16,10 @@ public enum PawnType
 public class MinimaxAlgorithm : MonoBehaviour
 {
 
-	[SerializeField] List<TempPawn> tempBoard = new List<TempPawn>();
+	public TempPawn bestPawn;
+    public Vector2Int bestMove;
+
+    [SerializeField] List<TempPawn> tempBoard = new List<TempPawn>();
 
 	[ContextMenu("THINK")]
 	public void Think()
@@ -40,16 +43,20 @@ public class MinimaxAlgorithm : MonoBehaviour
 			}
 		}
 
-		foreach(TempPawn pawn in tempBoard)
+        DrawBoard(tempBoard);
+
+        foreach (TempPawn pawn in tempBoard)
 		{
 			pawn.SetMovablePos(tempBoard);
 		}
 
 		//DrawBoard(tempBoard);
 
-		int i = Minimax(5, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
-		Debug.Log(i);
-	}
+		int i = Minimax(4, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
+
+		Debug.Log(bestPawn.movablePos.Count);
+        Debug.Log(bestMove);
+    }
 
 	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, int alpha, int beta)
 	{
@@ -58,12 +65,10 @@ public class MinimaxAlgorithm : MonoBehaviour
 		if (depth == 0 /* OR if game is over*/)
 		{
 			int total = 0;
-			Debug.Log("Count Board :" + myTempBoard.Count);
 			foreach (TempPawn pawn in myTempBoard)
 			{
 				total += (int)pawn.pawnType * (pawn.isEnemy ? -1 : 1);
 			}
-			Debug.Log("Total: " + total);
 			return total;
 		}
 
@@ -86,7 +91,12 @@ public class MinimaxAlgorithm : MonoBehaviour
 						}
 
 						int eval = Minimax(depth - 1, false, temp2, alpha, beta);
-						maxEval = Mathf.Max(maxEval, eval);
+						if (eval > maxEval)
+						{
+							maxEval = eval;
+							bestPawn = pawn;
+							bestMove = move;
+                        }
 						alpha = Mathf.Max(alpha, eval);
 						if (beta <= alpha) break;
 					}
@@ -114,7 +124,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 						}
 
 						int eval = Minimax(depth - 1, true, temp2, alpha, beta);
-						minEval = Mathf.Min(minEval, eval);
+                        minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
 						if (beta <= alpha) break;
 					}
@@ -172,7 +182,6 @@ public class MinimaxAlgorithm : MonoBehaviour
 			}
 			boardDisplay += "\n";
 		}
-		Debug.Log(boardDisplay);
 	}
 
 	List<TempPawn> CopyList(List<TempPawn> originalList)

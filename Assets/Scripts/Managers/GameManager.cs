@@ -134,6 +134,18 @@ public class GameManager : MonoBehaviour, IGameManager
         return board;
     }
 
+    public Selectable GetPawn(Vector2Int pos)
+    {
+        foreach (Selectable s in allPieces)
+        {
+            if (s.cellPos == pos)
+            {
+                return s;
+            }
+        }
+        return null;
+    }
+
     public void SaveBoards()
     {
         currentTurnForRep++;
