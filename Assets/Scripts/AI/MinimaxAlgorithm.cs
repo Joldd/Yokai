@@ -18,6 +18,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 	public TempPawn bestPawn;
     public Vector2Int bestMove;
+	public int maxDepth = 4;
 
     [SerializeField] List<TempPawn> tempBoard = new List<TempPawn>();
 
@@ -52,7 +53,9 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 		//DrawBoard(tempBoard);
 
-		int i = Minimax(4, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
+		int depth = maxDepth;
+
+		int i = Minimax(depth, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
 
 		Debug.Log(bestPawn.movablePos.Count);
         Debug.Log(bestMove);
@@ -94,8 +97,12 @@ public class MinimaxAlgorithm : MonoBehaviour
 						if (eval > maxEval)
 						{
 							maxEval = eval;
-							bestPawn = pawn;
-							bestMove = move;
+
+							if(depth == maxDepth)
+							{
+								bestPawn = pawn;
+								bestMove = move;
+							}
                         }
 						alpha = Mathf.Max(alpha, eval);
 						if (beta <= alpha) break;
