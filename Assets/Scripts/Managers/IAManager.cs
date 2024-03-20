@@ -55,7 +55,14 @@ public class IAManager : MonoBehaviour
         if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA && canPlay)
         {
             minimaxAlgorithm.Think();
-            GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
+            if (minimaxAlgorithm.IAmove && !minimaxAlgorithm.IAparachute)
+            {
+                GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
+            }
+            else if (!minimaxAlgorithm.IAmove && minimaxAlgorithm.IAparachute)
+            {
+                GameManager.Instance.GetCapturedCard(minimaxAlgorithm.bestPawn).InvokePiece(minimaxAlgorithm.bestMove);
+            }
             canPlay = false;
         }
     }

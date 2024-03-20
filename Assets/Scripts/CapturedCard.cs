@@ -8,8 +8,8 @@ using UnityEngine.Tilemaps;
 public class CapturedCard : MonoBehaviour
 {
     [SerializeField] private Image image;
-    [SerializeField] private int player;
-	private Selectable currentCard;
+    [SerializeField] public int player;
+	public Selectable currentCard;
 
 	private void Start()
 	{

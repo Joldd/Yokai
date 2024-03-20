@@ -18,13 +18,18 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 	public TempPawn bestPawn;
     public Vector2Int bestMove;
+	public bool IAmove;
+	public bool IAparachute;
 	public int maxDepth = 4;
 
     [SerializeField] List<TempPawn> tempBoard = new List<TempPawn>();
 
-	[ContextMenu("THINK")]
+    [SerializeField] List<TempPawn> diedBoard = new List<TempPawn>();
+
+    [ContextMenu("THINK")]
 	public void Think()
 	{
+		//LIVING BOARD
 		tempBoard.Clear();
 		foreach (Selectable pawn in GameManager.Instance.allPieces)
 		{
@@ -49,17 +54,37 @@ public class MinimaxAlgorithm : MonoBehaviour
 			pawn.SetMovablePos(tempBoard);
 		}
 
-		int depth = maxDepth;
+        //DIED BOARD
+		diedBoard.Clear();
+        foreach (Selectable pawn in GameManager.Instance.allPieces)
+        {
+            if (pawn.transform.CompareTag("Player01") && pawn.isDead)
+            {
+                TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos);
+                if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
+                diedBoard.Add(tempPawn);
+            }
+            else if (pawn.transform.CompareTag("Player02") && pawn.isDead)
+            {
+                TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos);
+                if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
+                diedBoard.Add(tempPawn);
+            }
+        }
 
-		int i = Minimax(depth, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
+        int depth = maxDepth;
+
+		int i = Minimax(depth, true, tempBoard, diedBoard, System.Int32.MinValue, System.Int32.MaxValue);
     }
 
-	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, int alpha, int beta)
+	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, List<TempPawn> tempDie, int alpha, int beta)
 	{
 		List<TempPawn> myTempBoard = CopyList(temp);
-		//DrawBoard(myTempBoard);
 		ScoreBool mat = CheckMatPawn(myTempBoard);
 		ScoreBool victory = CheckVictory(myTempBoard);
+        List<TempPawn> myDieBoard = CopyList(tempDie);
+        List<Vector2Int> myParachutePos = new List<Vector2Int>();
+
 		if (depth == 0 || mat.isEnded || victory.isEnded)
 		{
 			int total = 0;
@@ -74,23 +99,25 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 		if (maximizingPlayer)
 		{
-			int maxEval = System.Int32.MinValue;
+            int maxEval = System.Int32.MinValue;
 			foreach(TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-				if (!pawn.isEnemy)
+                myDieBoard = CopyList(tempDie);
+                if (!pawn.isEnemy)
 				{
 					foreach(Vector2Int move in pawn.movablePos)
 					{
 						List<TempPawn> temp2 = CopyList(myTempBoard);
-						temp2 = Move(pawn.currentPos, move, temp2);
+                        List<TempPawn> tempDie2 = CopyList(myDieBoard);
+                        temp2 = Move(pawn.currentPos, move, temp2, tempDie2);
 
 						foreach (TempPawn p in temp2)
 						{
 							p.SetMovablePos(temp2);
 						}
 
-                        int eval = Minimax(depth - 1, false, temp2, alpha, beta);
+                        int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
 						if (eval > maxEval)
 						{
 							maxEval = eval;
@@ -99,15 +126,44 @@ public class MinimaxAlgorithm : MonoBehaviour
 							{
 								bestPawn = pawn;
 								bestMove = move;
+								IAmove = true;
+								IAparachute = false;
 							}
                         }
 						alpha = Mathf.Max(alpha, eval);
 						if (beta <= alpha) break;
 					}
 				}
-				if (beta <= alpha) break;
+                if (beta <= alpha) break;
 			}
-			return maxEval;
+            foreach (TempPawn pawn in myDieBoard)
+            {
+                myTempBoard = CopyList(temp);
+                myDieBoard = CopyList(tempDie);
+				myParachutePos = GetParachutePos(myTempBoard);
+                foreach (Vector2Int newPos in myParachutePos)
+                {
+                    List<TempPawn> temp2 = CopyList(myTempBoard);
+                    List<TempPawn> tempDie2 = CopyList(myDieBoard);
+					Parachute(pawn, newPos, temp2, tempDie2);
+                    int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
+                    if (eval > maxEval)
+                    {
+                        maxEval = eval;
+
+                        if (depth == maxDepth)
+                        {
+                            bestPawn = pawn;
+                            bestMove = newPos;
+                            IAmove = false;
+                            IAparachute = true;
+                        }
+                    }
+                    alpha = Mathf.Max(alpha, eval);
+                    if (beta <= alpha) break;
+                }
+            }
+            return maxEval;
 		}
 		else
 		{
@@ -115,19 +171,21 @@ public class MinimaxAlgorithm : MonoBehaviour
 			foreach (TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-				if (pawn.isEnemy)
+                myDieBoard = CopyList(temp);
+                if (pawn.isEnemy)
 				{
 					foreach (Vector2Int move in pawn.movablePos)
 					{
 						List<TempPawn> temp2 = CopyList(myTempBoard);
-						temp2 = Move(pawn.currentPos, move, temp2);
+                        List<TempPawn> tempDie2 = CopyList(myDieBoard);
+                        temp2 = Move(pawn.currentPos, move, temp2, tempDie2);
 
 						foreach (TempPawn p in temp2)
 						{
 							p.SetMovablePos(temp2);
 						}
 
-						int eval = Minimax(depth - 1, true, temp2, alpha, beta);
+						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
                         minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
 						if (beta <= alpha) break;
@@ -139,32 +197,40 @@ public class MinimaxAlgorithm : MonoBehaviour
 		}
 	}
 
-	private List<TempPawn> Move(Vector2Int pawnPos, Vector2Int pawnMove, List<TempPawn> myTempBoard)
+	private void Parachute(TempPawn pawn, Vector2Int posParachute, List<TempPawn> myTempBoard, List<TempPawn> dieBoard)
 	{
-		List<TempPawn> temp = CopyList(myTempBoard);
-		List<TempPawn> temp2 = CopyList(myTempBoard);
-		for (int i = 0; i < temp2.Count; i++)
-		{
-			if(temp[i].currentPos == pawnMove)
-			{
-				temp[i] = null;
-			}
-		}
-		temp.RemoveAll(x => x == null);
-
-		temp2 = temp;
-
-		foreach(TempPawn pawn in temp2)
-		{
-			if(pawn.currentPos == pawnPos)
-			{
-				pawn.currentPos = pawnMove;
-            }
-        }
-		return temp2;
+		pawn.currentPos = posParachute;
+		myTempBoard.Add(pawn);
+		dieBoard.Remove(pawn);
 	}
 
-	private void DrawBoard(List<TempPawn> board)
+    private List<TempPawn> Move(Vector2Int pawnPos, Vector2Int pawnMove, List<TempPawn> myTempBoard, List<TempPawn> myDieBoard)
+    {
+        List<TempPawn> temp = CopyList(myTempBoard);
+        List<TempPawn> temp2 = CopyList(myTempBoard);
+        for (int i = 0; i < temp2.Count; i++)
+        {
+            if (temp[i].currentPos == pawnMove)
+            {
+                myDieBoard.Add(temp[i]);
+                temp[i] = null;
+            }
+        }
+        temp.RemoveAll(x => x == null);
+
+        temp2 = temp;
+
+        foreach (TempPawn pawn in temp2)
+        {
+            if (pawn.currentPos == pawnPos)
+            {
+                pawn.currentPos = pawnMove;
+            }
+        }
+        return temp2;
+    }
+
+    private void DrawBoard(List<TempPawn> board)
 	{
 		string boardDisplay = "\n";
 		for (int i = 3; i >= 0; i--)
@@ -188,17 +254,41 @@ public class MinimaxAlgorithm : MonoBehaviour
 		Debug.Log(boardDisplay);
 	}
 
-	List<TempPawn> CopyList(List<TempPawn> originalList)
+    private List<Vector2Int> GetParachutePos(List<TempPawn> board)
+    {
+		List<Vector2Int> L_ParachutePos = new List<Vector2Int>();
+        for (int i = 3; i >= 0; i--)
+        {
+            for (int j = 0; j <= 2; j++)
+            {
+                Vector2Int pos = new Vector2Int(j, i);
+                L_ParachutePos.Add(pos);
+                foreach (TempPawn temp in board)
+                {
+                    if (temp.currentPos == new Vector2Int(j, i))
+                    {
+                        L_ParachutePos.Remove(pos);
+                    }
+                }
+            }
+        }
+		return L_ParachutePos;
+    }
+
+    List<TempPawn> CopyList(List<TempPawn> originalList)
 	{
 		List<TempPawn> copiedList = new List<TempPawn>();
 
 		foreach (TempPawn originalObject in originalList)
 		{
-			// Create a new instance of CustomObject and copy the values
-			TempPawn copiedObject = new TempPawn(originalObject.pawnType, originalObject.isEnemy, originalObject.currentPos, originalObject.movablePos);
+			if (originalObject != null)
+			{
+                // Create a new instance of CustomObject and copy the values
+                TempPawn copiedObject = new TempPawn(originalObject.pawnType, originalObject.isEnemy, originalObject.currentPos, originalObject.movablePos);
 
-			// Add the copied object to the new list
-			copiedList.Add(copiedObject);
+                // Add the copied object to the new list
+                copiedList.Add(copiedObject);
+            }
 		}
 
 		return copiedList;
@@ -238,7 +328,6 @@ public class MinimaxAlgorithm : MonoBehaviour
 					{
 						score = 10000 * (pawn.isEnemy ? 1 : -1);
 					}
-					DrawBoard(board);
 				}
 			}
 		}

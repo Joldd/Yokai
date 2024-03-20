@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
 
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour, IGameManager
     public bool gamePaused = true;
 
     public bool isIA;
+
+    [SerializeField] public Transform[] capturedPanel;
 
     private void Awake()
     {
@@ -141,6 +144,22 @@ public class GameManager : MonoBehaviour, IGameManager
             if (s.cellPos == pos)
             {
                 return s;
+            }
+        }
+        return null;
+    }
+
+    public CapturedCard GetCapturedCard(TempPawn pawn)
+    {
+
+        for (int i = 0; i < capturedPanel[1].childCount; i++)
+        {
+            if (capturedPanel[1].GetChild(i).gameObject.TryGetComponent<CapturedCard>(out CapturedCard capturedCard))
+            {
+                if (capturedCard.currentCard.cardType == pawn.pawnType && capturedCard.player == 2 && !pawn.isEnemy)
+                {
+                    return capturedCard;
+                }
             }
         }
         return null;
