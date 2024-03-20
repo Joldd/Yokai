@@ -99,71 +99,74 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 		if (maximizingPlayer)
 		{
-            int maxEval = System.Int32.MinValue;
-			foreach(TempPawn pawn in myTempBoard)
+			int maxEval = System.Int32.MinValue;
+			foreach (TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-                myDieBoard = CopyList(tempDie);
-                if (!pawn.isEnemy)
+				myDieBoard = CopyList(tempDie);
+				if (!pawn.isEnemy)
 				{
-					foreach(Vector2Int move in pawn.movablePos)
+					foreach (Vector2Int move in pawn.movablePos)
 					{
 						List<TempPawn> temp2 = CopyList(myTempBoard);
-                        List<TempPawn> tempDie2 = CopyList(myDieBoard);
-                        temp2 = Move(pawn.currentPos, move, temp2, tempDie2);
+						List<TempPawn> tempDie2 = CopyList(myDieBoard);
+						temp2 = Move(pawn.currentPos, move, temp2, tempDie2);
 
 						foreach (TempPawn p in temp2)
 						{
 							p.SetMovablePos(temp2);
 						}
 
-                        int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
+						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
 						if (eval > maxEval)
 						{
 							maxEval = eval;
 
-							if(depth == maxDepth)
+							if (depth == maxDepth)
 							{
 								bestPawn = pawn;
 								bestMove = move;
 								IAmove = true;
 								IAparachute = false;
 							}
-                        }
+						}
 						alpha = Mathf.Max(alpha, eval);
 						if (beta <= alpha) break;
 					}
 				}
-                if (beta <= alpha) break;
+				if (beta <= alpha) break;
 			}
-            foreach (TempPawn pawn in myDieBoard)
-            {
-                myTempBoard = CopyList(temp);
-                myDieBoard = CopyList(tempDie);
-				myParachutePos = GetParachutePos(myTempBoard);
-                foreach (Vector2Int newPos in myParachutePos)
-                {
-                    List<TempPawn> temp2 = CopyList(myTempBoard);
-                    List<TempPawn> tempDie2 = CopyList(myDieBoard);
-					Parachute(pawn, newPos, temp2, tempDie2);
-                    int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
-                    if (eval > maxEval)
-                    {
-                        maxEval = eval;
+			foreach (TempPawn pawn in myDieBoard)
+			{
+				if (!pawn.isEnemy)
+				{
+					myTempBoard = CopyList(temp);
+					myDieBoard = CopyList(tempDie);
+					myParachutePos = GetParachutePos(myTempBoard);
+					foreach (Vector2Int newPos in myParachutePos)
+					{
+						List<TempPawn> temp2 = CopyList(myTempBoard);
+						List<TempPawn> tempDie2 = CopyList(myDieBoard);
+						Parachute(pawn, newPos, temp2, tempDie2);
+						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
+						if (eval > maxEval)
+						{
+							maxEval = eval;
 
-                        if (depth == maxDepth)
-                        {
-                            bestPawn = pawn;
-                            bestMove = newPos;
-                            IAmove = false;
-                            IAparachute = true;
-                        }
-                    }
-                    alpha = Mathf.Max(alpha, eval);
-                    if (beta <= alpha) break;
-                }
-            }
-            return maxEval;
+							if (depth == maxDepth)
+							{
+								bestPawn = pawn;
+								bestMove = newPos;
+								IAmove = false;
+								IAparachute = true;
+							}
+						}
+						alpha = Mathf.Max(alpha, eval);
+						if (beta <= alpha) break;
+					}
+				}
+			}
+			return maxEval;
 		}
 		else
 		{
@@ -171,14 +174,14 @@ public class MinimaxAlgorithm : MonoBehaviour
 			foreach (TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-                myDieBoard = CopyList(temp);
-                if (pawn.isEnemy)
+				myDieBoard = CopyList(temp);
+				if (pawn.isEnemy)
 				{
 					foreach (Vector2Int move in pawn.movablePos)
 					{
 						List<TempPawn> temp2 = CopyList(myTempBoard);
-                        List<TempPawn> tempDie2 = CopyList(myDieBoard);
-                        temp2 = Move(pawn.currentPos, move, temp2, tempDie2);
+						List<TempPawn> tempDie2 = CopyList(myDieBoard);
+						temp2 = Move(pawn.currentPos, move, temp2, tempDie2);
 
 						foreach (TempPawn p in temp2)
 						{
@@ -186,15 +189,34 @@ public class MinimaxAlgorithm : MonoBehaviour
 						}
 
 						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
-                        minEval = Mathf.Min(minEval, eval);
+						minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
 						if (beta <= alpha) break;
 					}
 				}
 				if (beta <= alpha) break;
 			}
-			return minEval;
-		}
+			foreach (TempPawn pawn in myDieBoard)
+			{
+				if (pawn.isEnemy)
+				{
+					myTempBoard = CopyList(temp);
+					myDieBoard = CopyList(tempDie);
+					myParachutePos = GetParachutePos(myTempBoard);
+					foreach (Vector2Int newPos in myParachutePos)
+					{
+						List<TempPawn> temp2 = CopyList(myTempBoard);
+						List<TempPawn> tempDie2 = CopyList(myDieBoard);
+						Parachute(pawn, newPos, temp2, tempDie2);
+						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
+						minEval = Mathf.Min(minEval, eval);
+						beta = Mathf.Min(beta, eval);
+					}
+				}
+                if (beta <= alpha) break;
+            }
+            return minEval;
+        }
 	}
 
 	private void Parachute(TempPawn pawn, Vector2Int posParachute, List<TempPawn> myTempBoard, List<TempPawn> dieBoard)
