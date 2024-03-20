@@ -44,21 +44,14 @@ public class MinimaxAlgorithm : MonoBehaviour
 			}
 		}
 
-        DrawBoard(tempBoard);
-
         foreach (TempPawn pawn in tempBoard)
 		{
 			pawn.SetMovablePos(tempBoard);
 		}
 
-		//DrawBoard(tempBoard);
-
 		int depth = maxDepth;
 
 		int i = Minimax(depth, true, tempBoard, System.Int32.MinValue, System.Int32.MaxValue);
-
-		Debug.Log(bestPawn.movablePos.Count);
-        Debug.Log(bestMove);
     }
 
 	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, int alpha, int beta)
@@ -93,7 +86,9 @@ public class MinimaxAlgorithm : MonoBehaviour
 							p.SetMovablePos(temp2);
 						}
 
-						int eval = Minimax(depth - 1, false, temp2, alpha, beta);
+						if (pawn.IsMat(temp2)) break;
+
+                        int eval = Minimax(depth - 1, false, temp2, alpha, beta);
 						if (eval > maxEval)
 						{
 							maxEval = eval;
@@ -162,9 +157,8 @@ public class MinimaxAlgorithm : MonoBehaviour
 			if(pawn.currentPos == pawnPos)
 			{
 				pawn.currentPos = pawnMove;
-			}
-		}
-
+            }
+        }
 		return temp2;
 	}
 
@@ -230,6 +224,26 @@ public class TempPawn
 		this.currentPos = currentPos;
 		this.movablePos = new List<Vector2Int>(movablePos);
 	}
+
+	public bool IsMat(List<TempPawn> tempBoard)
+	{
+		if (pawnType != PawnType.KOROPOKKURU) return false;
+
+        foreach (TempPawn pawn in tempBoard)
+        {
+            if (pawn.isEnemy != isEnemy)
+			{
+                foreach (Vector2Int move in pawn.movablePos)
+                {
+                    if (move == currentPos)
+					{
+						return true;
+					}
+                }
+            }
+        }
+        return false;
+    }
 
 	public void SetMovablePos(List<TempPawn> tempBoard)
 	{
