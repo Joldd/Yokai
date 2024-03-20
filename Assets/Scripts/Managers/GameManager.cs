@@ -331,7 +331,7 @@ public class GameManager : MonoBehaviour, IGameManager
 		switch (actionType)
         {
             case (EActionType.MOVE):
-
+                
                 break;
 
             case (EActionType.PARACHUTE):

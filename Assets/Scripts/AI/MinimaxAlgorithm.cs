@@ -247,6 +247,14 @@ public class MinimaxAlgorithm : MonoBehaviour
             if (pawn.currentPos == pawnPos)
             {
                 pawn.currentPos = pawnMove;
+				if (pawn.pawnType == PawnType.KODAMA && pawnPos.y == 3 && pawn.isEnemy)
+				{
+					pawn.pawnType = PawnType.SAMURAI;
+				}
+                if (pawn.pawnType == PawnType.KODAMA && pawnPos.y == 0 && !pawn.isEnemy)
+                {
+                    pawn.pawnType = PawnType.SAMURAI;
+                }
             }
         }
         return temp2;

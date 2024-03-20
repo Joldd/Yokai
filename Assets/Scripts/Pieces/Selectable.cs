@@ -219,13 +219,14 @@ public class Selectable : MonoBehaviour, IPawn
 
 	public ICompetitor GetCurrentOwner()
 	{
-		throw new System.NotImplementedException();
+        if (tag == "Player01") return GameManager.Instance.player01.gameObject.GetComponent<Competitor>();
+        else if (tag == "Player02") return GameManager.Instance.player02.gameObject.GetComponent<Competitor>();
+        else throw new System.NotImplementedException(); ;
 	}
 
 	public IBoardCase GetCurrentBoardCase()
 	{
         return Board.Instance.getCustomTile(cellPos);
-
     }
 
 	public EPawnType GetPawnType()
@@ -244,6 +245,11 @@ public class Selectable : MonoBehaviour, IPawn
         else if(this is Koropokkuru)
             return EPawnType.Koropokkuru;
 
-		throw new System.NotImplementedException();
+		else throw new System.NotImplementedException();
 	}
+
+    public Vector2Int GetCurrentPosition()
+    {
+        return cellPos;
+    }
 }

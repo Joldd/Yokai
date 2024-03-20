@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
@@ -24,7 +22,12 @@ public class Competitor : MonoBehaviour, ICompetitor
 		return gameObject.name;
 	}
 
-	public void SetCamp(ECampType camp)
+    public void Init(IGameManager igameManager, float timerForAI)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SetCamp(ECampType camp)
 	{
 		throw new System.NotImplementedException();
 	}
