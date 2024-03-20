@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private GameObject _gamePanel;
     [SerializeField] private GameObject _pausePanel;
+    [SerializeField] private GameObject _IASelection;
+    [SerializeField] private GameObject _modeSelection;
 
     public static UIManager Instance { get; private set; }
 
@@ -104,7 +106,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.gamePaused = false;
     }
 
-    public void PlayIA()
+    public void SelectIA()
+    {
+        _IASelection.SetActive(true);
+        _modeSelection.SetActive(false);
+    }
+
+    public void PlayIA(int depth)
     {
         Board.Instance.isPlayer1Turn = true;
         GameManager.Instance.isIA = true;
@@ -114,6 +122,7 @@ public class UIManager : MonoBehaviour
         _gamePanel.SetActive(true);
         _menuPanel.SetActive(false);
         GameManager.Instance.gamePaused = false;
+        GameManager.Instance.minimaxAlgorithm.maxDepth = depth;
     }
 
     public void BackMenu()
@@ -122,6 +131,8 @@ public class UIManager : MonoBehaviour
         _gamePanel.SetActive(false);
         _menuPanel.SetActive(true);
         _pausePanel.SetActive(false);
+        _IASelection.SetActive(false);
+        _modeSelection.SetActive(true);
         GameManager.Instance.gamePaused = true;
     }
 

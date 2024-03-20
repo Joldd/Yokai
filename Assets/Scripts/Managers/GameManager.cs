@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     [SerializeField] public Transform[] capturedPanel;
 
+    public MinimaxAlgorithm minimaxAlgorithm;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour, IGameManager
 	private void Start()
 	{
         InstanceBoard();
+        minimaxAlgorithm = GetComponent<MinimaxAlgorithm>();
     }
 
     public void InstanceBoard()
