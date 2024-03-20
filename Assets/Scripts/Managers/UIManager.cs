@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
 
     public void Victory(int i)
     {
+        GameManager.Instance.isGameOver = true;
         _victoryPanel.SetActive(true);
         _victoryText.text = " Victoire du joueur " + i + " !";
         _gamePanel.SetActive(false);
@@ -71,6 +72,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayAgain()
     {
+        GameManager.Instance.isGameOver = false;
         Board.Instance.isPlayer1Turn = true;
         GameManager.Instance.InstanceBoard();
         ClearCapture();
@@ -96,6 +98,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayPlayer()
     {
+        GameManager.Instance.isGameOver = false;
         Board.Instance.isPlayer1Turn = true;
         GameManager.Instance.InstanceBoard();
         GameManager.Instance.isIA = false;
@@ -114,6 +117,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayIA(int depth)
     {
+        GameManager.Instance.isGameOver = false;
         Board.Instance.isPlayer1Turn = true;
         GameManager.Instance.isIA = true;
         GameManager.Instance.InstanceBoard();

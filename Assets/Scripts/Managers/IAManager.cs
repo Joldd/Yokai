@@ -52,7 +52,7 @@ public class IAManager : MonoBehaviour
         //}
 
         ////////////////////// MINIMAX IA /////////////////////////////////////////////
-        if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA && canPlay)
+        if (!Board.Instance.isPlayer1Turn && GameManager.Instance.isIA && canPlay && !GameManager.Instance.isGameOver)
         {
             minimaxAlgorithm.Think();
             if (minimaxAlgorithm.IAmove && !minimaxAlgorithm.IAparachute)

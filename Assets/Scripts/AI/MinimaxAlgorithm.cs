@@ -85,7 +85,13 @@ public class MinimaxAlgorithm : MonoBehaviour
         List<TempPawn> myDieBoard = CopyList(tempDie);
         List<Vector2Int> myParachutePos = new List<Vector2Int>();
 
-		if (depth == 0 || mat.isEnded || victory.isEnded)
+		int kN = 0;
+		foreach (TempPawn pawn in myTempBoard)
+		{
+			if (pawn.pawnType == PawnType.KOROPOKKURU) kN++;
+		}
+
+		if (depth <= 0 || mat.isEnded || victory.isEnded || kN < 2)
 		{
 			int total = 0;
 			foreach (TempPawn pawn in myTempBoard)
@@ -93,7 +99,11 @@ public class MinimaxAlgorithm : MonoBehaviour
 				total += (int)pawn.pawnType * (pawn.isEnemy ? -1 : 1);
 			}
 			if (mat.isEnded) total += mat.scoreAmount;
-			if (victory.isEnded) total += mat.scoreAmount;
+			if (victory.isEnded)total += victory.scoreAmount;
+
+			//DrawBoard(myTempBoard);
+			//Debug.LogFormat("<color=green>{0}</color>", total);
+
 			return total;
 		}
 
@@ -126,6 +136,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 							{
 								bestPawn = pawn;
 								bestMove = move;
+								Debug.Log($"Test {maxEval}, {bestPawn.pawnType}, {bestMove}");
 								IAmove = true;
 								IAparachute = false;
 							}
@@ -213,9 +224,9 @@ public class MinimaxAlgorithm : MonoBehaviour
 						beta = Mathf.Min(beta, eval);
 					}
 				}
-                if (beta <= alpha) break;
-            }
-            return minEval;
+				if (beta <= alpha) break;
+			}
+			return minEval;
         }
 	}
 
@@ -234,6 +245,7 @@ public class MinimaxAlgorithm : MonoBehaviour
         {
             if (temp[i].currentPos == pawnMove)
             {
+				temp[i].isEnemy = !temp[i].isEnemy;
                 myDieBoard.Add(temp[i]);
                 temp[i] = null;
             }

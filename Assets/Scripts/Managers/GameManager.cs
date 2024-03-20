@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public bool isIA;
 
+    public bool isGameOver;
+
     [SerializeField] public Transform[] capturedPanel;
 
     public MinimaxAlgorithm minimaxAlgorithm;
@@ -331,7 +333,7 @@ public class GameManager : MonoBehaviour, IGameManager
 		switch (actionType)
         {
             case (EActionType.MOVE):
-                
+
                 break;
 
             case (EActionType.PARACHUTE):
