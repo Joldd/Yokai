@@ -57,14 +57,18 @@ public class MinimaxAlgorithm : MonoBehaviour
 	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, int alpha, int beta)
 	{
 		List<TempPawn> myTempBoard = CopyList(temp);
-		DrawBoard(myTempBoard);
-		if (depth == 0 /* OR if game is over*/)
+		//DrawBoard(myTempBoard);
+		ScoreBool mat = CheckMatPawn(myTempBoard);
+		ScoreBool victory = CheckVictory(myTempBoard);
+		if (depth == 0 || mat.isEnded || victory.isEnded)
 		{
 			int total = 0;
 			foreach (TempPawn pawn in myTempBoard)
 			{
 				total += (int)pawn.pawnType * (pawn.isEnemy ? -1 : 1);
 			}
+			if (mat.isEnded) total += mat.scoreAmount;
+			if (victory.isEnded) total += mat.scoreAmount;
 			return total;
 		}
 
@@ -85,8 +89,6 @@ public class MinimaxAlgorithm : MonoBehaviour
 						{
 							p.SetMovablePos(temp2);
 						}
-
-						if (pawn.IsMat(temp2)) break;
 
                         int eval = Minimax(depth - 1, false, temp2, alpha, beta);
 						if (eval > maxEval)
@@ -183,6 +185,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 			}
 			boardDisplay += "\n";
 		}
+		Debug.Log(boardDisplay);
 	}
 
 	List<TempPawn> CopyList(List<TempPawn> originalList)
@@ -199,6 +202,47 @@ public class MinimaxAlgorithm : MonoBehaviour
 		}
 
 		return copiedList;
+	}
+
+	ScoreBool CheckMatPawn(List<TempPawn> board)
+	{
+		bool isMat = false;
+		int score = 0;
+		foreach (TempPawn pawn in board)
+		{
+			isMat = pawn.IsMat(board);
+			if (isMat)
+			{
+				score = 10000 * (pawn.isEnemy ? 1 : -1);
+			}
+		}
+		return new ScoreBool(isMat, score);
+	}
+
+	ScoreBool CheckVictory(List<TempPawn> board)
+	{
+		bool isVictory = false;
+		int score = 0;
+		foreach (TempPawn pawn in board)
+		{
+			if (pawn.pawnType == PawnType.KOROPOKKURU)
+			{
+				if ((pawn.isEnemy && pawn.currentPos.y == 3) || (!pawn.isEnemy && pawn.currentPos.y == 0))
+				{
+					isVictory = true;
+					if (!pawn.IsMat(board))
+					{
+						score = 10000 * (pawn.isEnemy ? -1 : 1);
+					}
+					else
+					{
+						score = 10000 * (pawn.isEnemy ? 1 : -1);
+					}
+					DrawBoard(board);
+				}
+			}
+		}
+		return new ScoreBool(isVictory, score);
 	}
 }
 
@@ -306,5 +350,17 @@ public class TempPawn
 
 		movablePos.Clear();
 		movablePos = new List<Vector2Int>(tempMovablePos);
+	}
+}
+
+public class ScoreBool
+{
+	public bool isEnded;
+	public int scoreAmount;
+
+	public ScoreBool(bool isEnded, int scoreAmount)
+	{
+		this.isEnded = isEnded;
+		this.scoreAmount = scoreAmount;
 	}
 }

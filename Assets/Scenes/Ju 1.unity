@@ -456,6 +456,10 @@ PrefabInstance:
       propertyPath: player02
       value: 
       objectReference: {fileID: 2137837515}
+    - target: {fileID: 3396781466943277414, guid: 4761dd824fb742544a832d3b9d04102b, type: 3}
+      propertyPath: maxDepth
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4014498174792507829, guid: 4761dd824fb742544a832d3b9d04102b, type: 3}
       propertyPath: m_Name
       value: GameManager
