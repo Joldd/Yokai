@@ -147,16 +147,16 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
 
-                        CSVManager.SaveData(
-                                    new string[7] {
-										depth.ToString(),
-                                        pawn.pawnType.ToString(),
-                                        move.ToString(),
-										"Move",
-                                        eval.ToString(),
-										"IA",
-										GameManager.Instance.turn.ToString()
-                                    });
+          //              CSVManager.SaveData(
+          //                          new string[7] {
+										//depth.ToString(),
+          //                              pawn.pawnType.ToString(),
+          //                              move.ToString(),
+										//"Move",
+          //                              eval.ToString(),
+										//"IA",
+										//GameManager.Instance.turn.ToString()
+          //                          });
 
                         if (eval > maxEval)
 						{
@@ -165,25 +165,14 @@ public class MinimaxAlgorithm : MonoBehaviour
 							if (depth == maxDepth)
 							{
 								bestPawn = pawn;
-								bestMove = move;							
+								bestMove = move;
 
 								IAmove = true;
 								IAparachute = false;
 							}
 						}
 						alpha = Mathf.Max(alpha, eval);
-						if (beta <= alpha)
-						{
-							CSVManager.SaveData(
-									new string[5] {
-										"break",
-                                        "break",
-                                        "break",
-                                        "break",
-                                        "break"
-                                    });
-							break;
-						}
+						if (beta <= alpha) break;
 					}
 				}
 				if (beta <= alpha) break;
@@ -200,18 +189,24 @@ public class MinimaxAlgorithm : MonoBehaviour
 						List<TempPawn> temp2 = CopyList(myTempBoard);
 						List<TempPawn> tempDie2 = CopyList(myDieBoard);
 						Parachute(pawn, newPos, temp2, tempDie2);
+
+						foreach (TempPawn p in temp2)
+						{
+							p.SetMovablePos(temp2);
+						}
+
 						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
 
-                        CSVManager.SaveData(
-                                    new string[7] {
-                                        depth.ToString(),
-                                        pawn.pawnType.ToString(),
-                                        newPos.ToString(),
-                                        "Parachute",
-                                        eval.ToString(),
-                                        "IA",
-                                        GameManager.Instance.turn.ToString()
-                                    });
+                        //CSVManager.SaveData(
+                        //            new string[7] {
+                        //                depth.ToString(),
+                        //                pawn.pawnType.ToString(),
+                        //                newPos.ToString(),
+                        //                "Parachute",
+                        //                eval.ToString(),
+                        //                "IA",
+                        //                GameManager.Instance.turn.ToString()
+                        //            });
 
                         if (eval > maxEval)
 						{
@@ -239,7 +234,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 			foreach (TempPawn pawn in myTempBoard)
 			{
 				myTempBoard = CopyList(temp);
-				myDieBoard = CopyList(temp);
+				myDieBoard = CopyList(tempDie);
 				if (pawn.isEnemy)
 				{
 					foreach (Vector2Int move in pawn.movablePos)
@@ -255,16 +250,16 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
 
-                        CSVManager.SaveData(
-                                    new string[7] {
-                                        depth.ToString(),
-                                        pawn.pawnType.ToString(),
-                                        move.ToString(),
-                                        "Move",
-                                        eval.ToString(),
-                                        "Joueur",
-                                        GameManager.Instance.turn.ToString()
-                                    });
+                        //CSVManager.SaveData(
+                        //            new string[7] {
+                        //                depth.ToString(),
+                        //                pawn.pawnType.ToString(),
+                        //                move.ToString(),
+                        //                "Move",
+                        //                eval.ToString(),
+                        //                "Joueur",
+                        //                GameManager.Instance.turn.ToString()
+                        //            });
 
                         minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
@@ -285,18 +280,24 @@ public class MinimaxAlgorithm : MonoBehaviour
 						List<TempPawn> temp2 = CopyList(myTempBoard);
 						List<TempPawn> tempDie2 = CopyList(myDieBoard);
 						Parachute(pawn, newPos, temp2, tempDie2);
+
+						foreach (TempPawn p in temp2)
+						{
+							p.SetMovablePos(temp2);
+						}
+
 						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
 
-                        CSVManager.SaveData(
-                                    new string[7] {
-                                        depth.ToString(),
-                                        pawn.pawnType.ToString(),
-                                        newPos.ToString(),
-                                        "Parachute",
-                                        eval.ToString(),
-                                        "Joueur",
-                                        GameManager.Instance.turn.ToString()
-                                    });
+                        //CSVManager.SaveData(
+                        //            new string[7] {
+                        //                depth.ToString(),
+                        //                pawn.pawnType.ToString(),
+                        //                newPos.ToString(),
+                        //                "Parachute",
+                        //                eval.ToString(),
+                        //                "Joueur",
+                        //                GameManager.Instance.turn.ToString()
+                        //            });
 
                         minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
@@ -318,22 +319,20 @@ public class MinimaxAlgorithm : MonoBehaviour
 
     private List<TempPawn> Move(Vector2Int pawnPos, Vector2Int pawnMove, List<TempPawn> myTempBoard, List<TempPawn> myDieBoard)
     {
-        List<TempPawn> temp = CopyList(myTempBoard);
         List<TempPawn> temp2 = CopyList(myTempBoard);
-        for (int i = 0; i < temp2.Count; i++)
-        {
-            if (temp[i].currentPos == pawnMove)
-            {
-				temp[i].isEnemy = !temp[i].isEnemy;
-                myDieBoard.Add(temp[i]);
-                temp[i] = null;
-            }
-        }
-        temp.RemoveAll(x => x == null);
 
-        temp2 = temp;
+		for (int i = temp2.Count - 1; i >= 0; i--)
+		{
+			if (temp2[i].currentPos == pawnMove)
+			{
+				TempPawn tempPawn = temp2[i];
+				temp2.RemoveAt(i);
+				tempPawn.isEnemy = !tempPawn.isEnemy;
+				myDieBoard.Add(tempPawn);
+			}
+		}
 
-        foreach (TempPawn pawn in temp2)
+		foreach (TempPawn pawn in temp2)
         {
             if (pawn.currentPos == pawnPos)
             {
@@ -353,7 +352,14 @@ public class MinimaxAlgorithm : MonoBehaviour
 
     private void DrawBoard(List<TempPawn> board)
 	{
-		string boardDisplay = "\n";
+		string test = "\n";
+		foreach (TempPawn temp in board)
+		{
+			if (temp.isEnemy) test += ((int)temp.pawnType).ToString() + ":X |";
+			else test += ((int)temp.pawnType).ToString() + ":O |";
+		}
+
+		string boardDisplay = test + "\n";
 		for (int i = 3; i >= 0; i--)
 		{
 			for (int j = 0; j <= 2; j++)
