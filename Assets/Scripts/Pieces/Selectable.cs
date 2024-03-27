@@ -91,7 +91,7 @@ public class Selectable : MonoBehaviour, IPawn
             {
                 transform.Translate(-_speed * _direction * Time.deltaTime);
             }
-            if (Vector3.Distance(transform.position, _target) <= 0.2f)
+            if (Vector3.Distance(transform.position, _target) <= 0.5f)
             {
                 transform.position = _target;
                 isMoving = false;

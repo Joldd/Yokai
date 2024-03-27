@@ -300,6 +300,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3855852906326368067, guid: be463bc4880dfaf47a97d013abcd1e37, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5242043444774494012, guid: be463bc4880dfaf47a97d013abcd1e37, type: 3}
       propertyPath: m_Name
       value: Canvas
