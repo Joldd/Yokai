@@ -44,6 +44,7 @@ public class Board : MonoBehaviour
                 IAManager.Instance.canPlay = true;
             }
             uiManager.UpdatePlayerTurn();
+            GameManager.Instance.turn++;
         });
     }
 

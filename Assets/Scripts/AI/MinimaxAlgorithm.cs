@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
+using System.IO;
 
 public enum PawnType
 {
@@ -145,25 +147,43 @@ public class MinimaxAlgorithm : MonoBehaviour
 
 						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
 
-						//if (depth == maxDepth)
-						//{
-						//	Debug.Log($"Test {eval}, {pawn.pawnType}, {move}");
-						//}
+                        CSVManager.SaveData(
+                                    new string[7] {
+										depth.ToString(),
+                                        pawn.pawnType.ToString(),
+                                        move.ToString(),
+										"Move",
+                                        eval.ToString(),
+										"IA",
+										GameManager.Instance.turn.ToString()
+                                    });
 
-						if (eval > maxEval)
+                        if (eval > maxEval)
 						{
 							maxEval = eval;
 
 							if (depth == maxDepth)
 							{
 								bestPawn = pawn;
-								bestMove = move;
+								bestMove = move;							
+
 								IAmove = true;
 								IAparachute = false;
 							}
 						}
 						alpha = Mathf.Max(alpha, eval);
-						if (beta <= alpha) break;
+						if (beta <= alpha)
+						{
+							CSVManager.SaveData(
+									new string[5] {
+										"break",
+                                        "break",
+                                        "break",
+                                        "break",
+                                        "break"
+                                    });
+							break;
+						}
 					}
 				}
 				if (beta <= alpha) break;
@@ -182,12 +202,18 @@ public class MinimaxAlgorithm : MonoBehaviour
 						Parachute(pawn, newPos, temp2, tempDie2);
 						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
 
-						//if (depth == maxDepth)
-						//{
-						//	Debug.Log($"Test {eval}, {pawn.pawnType}, {newPos}");
-						//}
+                        CSVManager.SaveData(
+                                    new string[7] {
+                                        depth.ToString(),
+                                        pawn.pawnType.ToString(),
+                                        newPos.ToString(),
+                                        "Parachute",
+                                        eval.ToString(),
+                                        "IA",
+                                        GameManager.Instance.turn.ToString()
+                                    });
 
-						if (eval > maxEval)
+                        if (eval > maxEval)
 						{
 							maxEval = eval;
 
@@ -228,7 +254,19 @@ public class MinimaxAlgorithm : MonoBehaviour
 						}
 
 						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
-						minEval = Mathf.Min(minEval, eval);
+
+                        CSVManager.SaveData(
+                                    new string[7] {
+                                        depth.ToString(),
+                                        pawn.pawnType.ToString(),
+                                        move.ToString(),
+                                        "Move",
+                                        eval.ToString(),
+                                        "Joueur",
+                                        GameManager.Instance.turn.ToString()
+                                    });
+
+                        minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
 						if (beta <= alpha) break;
 					}
@@ -248,7 +286,19 @@ public class MinimaxAlgorithm : MonoBehaviour
 						List<TempPawn> tempDie2 = CopyList(myDieBoard);
 						Parachute(pawn, newPos, temp2, tempDie2);
 						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
-						minEval = Mathf.Min(minEval, eval);
+
+                        CSVManager.SaveData(
+                                    new string[7] {
+                                        depth.ToString(),
+                                        pawn.pawnType.ToString(),
+                                        newPos.ToString(),
+                                        "Parachute",
+                                        eval.ToString(),
+                                        "Joueur",
+                                        GameManager.Instance.turn.ToString()
+                                    });
+
+                        minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
 						if (beta <= alpha) break;
 					}
@@ -259,7 +309,7 @@ public class MinimaxAlgorithm : MonoBehaviour
         }
 	}
 
-	private void Parachute(TempPawn pawn, Vector2Int posParachute, List<TempPawn> myTempBoard, List<TempPawn> dieBoard)
+    private void Parachute(TempPawn pawn, Vector2Int posParachute, List<TempPawn> myTempBoard, List<TempPawn> dieBoard)
 	{
 		pawn.currentPos = posParachute;
 		myTempBoard.Add(pawn);

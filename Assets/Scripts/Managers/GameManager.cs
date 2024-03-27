@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public MinimaxAlgorithm minimaxAlgorithm;
 
+    public int turn;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,6 +57,7 @@ public class GameManager : MonoBehaviour, IGameManager
 	{
         InstanceBoard();
         minimaxAlgorithm = GetComponent<MinimaxAlgorithm>();
+        turn = 1;
     }
 
     public void InstanceBoard()
