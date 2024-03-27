@@ -80,8 +80,8 @@ public class MinimaxAlgorithm : MonoBehaviour
 	private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, List<TempPawn> tempDie, int alpha, int beta)
 	{
 		List<TempPawn> myTempBoard = CopyList(temp);
-		ScoreBool mat = CheckMatPawn(myTempBoard);
-		ScoreBool victory = CheckVictory(myTempBoard);
+		ScoreBool mat = CheckMatPawn(myTempBoard, maximizingPlayer);
+		ScoreBool victory = CheckVictory(myTempBoard, maximizingPlayer);
         List<TempPawn> myDieBoard = CopyList(tempDie);
         List<Vector2Int> myParachutePos = new List<Vector2Int>();
 
@@ -91,7 +91,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 			if (pawn.pawnType == PawnType.KOROPOKKURU) kN++;
 		}
 
-		if (depth <= 0 || mat.isEnded || victory.isEnded || kN < 2)
+		if (depth <= 0 || ((mat.isEnded || victory.isEnded) && depth != maxDepth) || kN < 2)
 		{
 			int total = 0;
 			foreach (TempPawn pawn in myTempBoard)
@@ -101,8 +101,24 @@ public class MinimaxAlgorithm : MonoBehaviour
 			if (mat.isEnded) total += mat.scoreAmount;
 			if (victory.isEnded)total += victory.scoreAmount;
 
-			//DrawBoard(myTempBoard);
-			//Debug.LogFormat("<color=green>{0}</color>", total);
+			//if (depth <= 0)
+			//{
+			//	Debug.Log($"Ended at lower depth");
+			//	DrawBoard(myTempBoard);
+			//	Debug.Log("____");
+			//}
+			//else if (mat.isEnded)
+			//{
+			//	Debug.Log($"Ended with mat at: {depth}, with score: {total}");
+			//	DrawBoard(myTempBoard);
+			//	Debug.Log("____");
+			//}
+			//else if (victory.isEnded)
+			//{
+			//	Debug.Log($"Ended with victory at: {depth}, with score: {total}");
+			//	DrawBoard(myTempBoard);
+			//	Debug.Log("____");
+			//}
 
 			return total;
 		}
@@ -128,6 +144,12 @@ public class MinimaxAlgorithm : MonoBehaviour
 						}
 
 						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
+
+						//if (depth == maxDepth)
+						//{
+						//	Debug.Log($"Test {eval}, {pawn.pawnType}, {move}");
+						//}
+
 						if (eval > maxEval)
 						{
 							maxEval = eval;
@@ -136,7 +158,6 @@ public class MinimaxAlgorithm : MonoBehaviour
 							{
 								bestPawn = pawn;
 								bestMove = move;
-								Debug.Log($"Test {maxEval}, {bestPawn.pawnType}, {bestMove}");
 								IAmove = true;
 								IAparachute = false;
 							}
@@ -160,6 +181,12 @@ public class MinimaxAlgorithm : MonoBehaviour
 						List<TempPawn> tempDie2 = CopyList(myDieBoard);
 						Parachute(pawn, newPos, temp2, tempDie2);
 						int eval = Minimax(depth - 1, false, temp2, tempDie2, alpha, beta);
+
+						//if (depth == maxDepth)
+						//{
+						//	Debug.Log($"Test {eval}, {pawn.pawnType}, {newPos}");
+						//}
+
 						if (eval > maxEval)
 						{
 							maxEval = eval;
@@ -176,6 +203,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 						if (beta <= alpha) break;
 					}
 				}
+				if (beta <= alpha) break;
 			}
 			return maxEval;
 		}
@@ -222,6 +250,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 						int eval = Minimax(depth - 1, true, temp2, tempDie2, alpha, beta);
 						minEval = Mathf.Min(minEval, eval);
 						beta = Mathf.Min(beta, eval);
+						if (beta <= alpha) break;
 					}
 				}
 				if (beta <= alpha) break;
@@ -336,22 +365,23 @@ public class MinimaxAlgorithm : MonoBehaviour
 		return copiedList;
 	}
 
-	ScoreBool CheckMatPawn(List<TempPawn> board)
+	ScoreBool CheckMatPawn(List<TempPawn> board, bool maximizing)
 	{
 		bool isMat = false;
 		int score = 0;
 		foreach (TempPawn pawn in board)
 		{
-			isMat = pawn.IsMat(board);
+			isMat = pawn.IsMat(board, maximizing);
 			if (isMat)
 			{
 				score = 10000 * (pawn.isEnemy ? 1 : -1);
+				break;
 			}
 		}
 		return new ScoreBool(isMat, score);
 	}
 
-	ScoreBool CheckVictory(List<TempPawn> board)
+	ScoreBool CheckVictory(List<TempPawn> board, bool maximizing)
 	{
 		bool isVictory = false;
 		int score = 0;
@@ -362,7 +392,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 				if ((pawn.isEnemy && pawn.currentPos.y == 3) || (!pawn.isEnemy && pawn.currentPos.y == 0))
 				{
 					isVictory = true;
-					if (!pawn.IsMat(board))
+					if (!pawn.IsMat(board, maximizing))
 					{
 						score = 10000 * (pawn.isEnemy ? -1 : 1);
 					}
@@ -370,6 +400,7 @@ public class MinimaxAlgorithm : MonoBehaviour
 					{
 						score = 10000 * (pawn.isEnemy ? 1 : -1);
 					}
+					break;
 				}
 			}
 		}
@@ -400,9 +431,10 @@ public class TempPawn
 		this.movablePos = new List<Vector2Int>(movablePos);
 	}
 
-	public bool IsMat(List<TempPawn> tempBoard)
+	public bool IsMat(List<TempPawn> tempBoard, bool maximizing)
 	{
 		if (pawnType != PawnType.KOROPOKKURU) return false;
+		if (isEnemy != maximizing) return false;
 
         foreach (TempPawn pawn in tempBoard)
         {
