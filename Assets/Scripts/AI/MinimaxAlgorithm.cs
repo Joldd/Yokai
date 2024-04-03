@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using UnityEngine.SocialPlatforms.Impl;
 using System.IO;
+using YokaiNoMori.Enumeration;
 
 namespace Groupe10
 {

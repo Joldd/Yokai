@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using YokaiNoMori.Enumeration;
+using YokaiNoMori.Interface;
 
 namespace Groupe10
 {
-    public class IAManager : MonoBehaviour
+    public class IAManager : MonoBehaviour, ICompetitor
     {
         public static IAManager Instance { get; private set; }
 
@@ -13,6 +15,12 @@ namespace Groupe10
         public bool canPlay;
 
         private MinimaxAlgorithm minimaxAlgorithm;
+
+        public string nameCompetitor;
+
+        private ECampType camp;
+        private IGameManager myGameManager;
+        private float timeForPlay;
 
         private void Awake()
         {
@@ -56,14 +64,60 @@ namespace Groupe10
                 minimaxAlgorithm.Think();
                 if (minimaxAlgorithm.IAmove && !minimaxAlgorithm.IAparachute)
                 {
-                    GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
+                    //GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
+                    myGameManager.DoAction(GetIPawnFromTempPawn(minimaxAlgorithm.bestPawn, false), minimaxAlgorithm.bestMove, EActionType.MOVE);
                 }
                 else if (!minimaxAlgorithm.IAmove && minimaxAlgorithm.IAparachute)
                 {
-                    GameManager.Instance.GetCapturedCard(minimaxAlgorithm.bestPawn).InvokePiece(minimaxAlgorithm.bestMove);
+                    myGameManager.DoAction(GetIPawnFromTempPawn(minimaxAlgorithm.bestPawn, true), minimaxAlgorithm.bestMove, EActionType.PARACHUTE);
+                    //GameManager.Instance.GetCapturedCard(minimaxAlgorithm.bestPawn).InvokePiece(minimaxAlgorithm.bestMove);
                 }
                 canPlay = false;
             }
+        }
+
+        private EPawnType GetEPawnTypeFromType(PawnType type)
+        {
+            switch (type)
+            {
+                case PawnType.KODAMA:
+                    return EPawnType.Kodama;
+                case PawnType.KITSUNE:
+                    return EPawnType.Kitsune;
+                case PawnType.KOROPOKKURU:
+                    return EPawnType.Koropokkuru;
+                case PawnType.SAMURAI:
+                    return EPawnType.KodamaSamurai;
+                case PawnType.TANUKI:
+                    return EPawnType.Tanuki;
+                default:
+                    return EPawnType.Kodama;
+            }
+        }
+
+        private IPawn GetIPawnFromTempPawn(TempPawn tempPawn, bool isDead)
+        {
+            if (!isDead)
+            {
+                foreach (IPawn ipawn in myGameManager.GetPawnsOnBoard(camp))
+                {
+                    if (ipawn.GetCurrentPosition() == tempPawn.currentPos)
+                    {
+                        return ipawn;
+                    }
+                }
+            }
+            if (isDead)
+            {
+                foreach (IPawn ipawn in myGameManager.GetReservePawnsByPlayer(camp))
+                {
+                    if (ipawn.GetPawnType() == GetEPawnTypeFromType(tempPawn.pawnType))
+                    {
+                        return ipawn;
+                    }
+                }
+            }
+            return null;
         }
 
         private List<Selectable> GetPawns()
@@ -131,6 +185,40 @@ namespace Groupe10
                     return false;
                 }
             }
+        }
+
+        //////////////////////// INTERFACE /////////////////////////////////////////////////////
+
+        public void Init(IGameManager igameManager, float timerForAI, ECampType currentCamp)
+        {
+            myGameManager = igameManager;
+            camp = currentCamp;
+            timeForPlay = timerForAI;
+        }
+
+        public string GetName()
+        {
+            return nameCompetitor;
+        }
+
+        public ECampType GetCamp()
+        {
+            return camp;
+        }
+
+        public void GetDatas()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void StartTurn()
+        {
+            canPlay = true;
+        }
+
+        public void StopTurn()
+        {
+            canPlay = false;
         }
     }
 }
