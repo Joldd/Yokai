@@ -17,12 +17,22 @@ public class Competitor : MonoBehaviour, ICompetitor
 		return campType;
 	}
 
-	public string GetName()
+    public void GetDatas()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public string GetName()
 	{
 		return gameObject.name;
 	}
 
     public void Init(IGameManager igameManager, float timerForAI)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Init(IGameManager igameManager, float timerForAI, ECampType currentCamp)
     {
         throw new System.NotImplementedException();
     }

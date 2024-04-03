@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
+using YokaiNoMori.Struct;
 
 public class GameManager : MonoBehaviour, IGameManager
 {
@@ -346,6 +347,21 @@ public class GameManager : MonoBehaviour, IGameManager
                 break;
         }
 	}
+
+    public List<IPawn> GetReservePawnsByPlayer(ECampType campType)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public List<IPawn> GetPawnsOnBoard(ECampType campType)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public SAction GetLastAction()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 [System.Serializable]
