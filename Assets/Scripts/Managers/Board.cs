@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using Groupe10;
 
 public class Board : MonoBehaviour
 {
