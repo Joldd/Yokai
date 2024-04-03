@@ -90,12 +90,12 @@ namespace Groupe10
             foreach (IPawn pawn in IAManager.Instance.myGameManager.GetReservePawnsByPlayer(ECampType.PLAYER_ONE))
             {
                 TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), true, pawn.GetCurrentPosition());
-                tempBoard.Add(tempPawn);
+                diedBoard.Add(tempPawn);
             }
             foreach (IPawn pawn in IAManager.Instance.myGameManager.GetReservePawnsByPlayer(ECampType.PLAYER_TWO))
             {
                 TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), false, pawn.GetCurrentPosition());
-                tempBoard.Add(tempPawn);
+                diedBoard.Add(tempPawn);
             }
 
             int depth = maxDepth;

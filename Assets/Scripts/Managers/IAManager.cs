@@ -37,6 +37,7 @@ namespace Groupe10
         private void Start()
         {
             minimaxAlgorithm = GetComponent<MinimaxAlgorithm>();
+            myGameManager = GameManager.Instance;
         }
 
         private void Update()
@@ -64,13 +65,13 @@ namespace Groupe10
                 minimaxAlgorithm.Think();
                 if (minimaxAlgorithm.IAmove && !minimaxAlgorithm.IAparachute)
                 {
-                    //GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
-                    myGameManager.DoAction(GetIPawnFromTempPawn(minimaxAlgorithm.bestPawn, false), minimaxAlgorithm.bestMove, EActionType.MOVE);
+                    GameManager.Instance.GetPawn(minimaxAlgorithm.bestPawn.currentPos).MoveTo(minimaxAlgorithm.bestMove);
+                    //myGameManager.DoAction(GetIPawnFromTempPawn(minimaxAlgorithm.bestPawn, false), minimaxAlgorithm.bestMove, EActionType.MOVE);
                 }
                 else if (!minimaxAlgorithm.IAmove && minimaxAlgorithm.IAparachute)
                 {
-                    myGameManager.DoAction(GetIPawnFromTempPawn(minimaxAlgorithm.bestPawn, true), minimaxAlgorithm.bestMove, EActionType.PARACHUTE);
-                    //GameManager.Instance.GetCapturedCard(minimaxAlgorithm.bestPawn).InvokePiece(minimaxAlgorithm.bestMove);
+                    //myGameManager.DoAction(GetIPawnFromTempPawn(minimaxAlgorithm.bestPawn, true), minimaxAlgorithm.bestMove, EActionType.PARACHUTE);
+                    GameManager.Instance.GetCapturedCard(minimaxAlgorithm.bestPawn).InvokePiece(minimaxAlgorithm.bestMove);
                 }
                 canPlay = false;
             }
