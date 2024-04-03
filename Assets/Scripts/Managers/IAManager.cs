@@ -19,7 +19,7 @@ namespace Groupe10
         public string nameCompetitor;
 
         private ECampType camp;
-        private IGameManager myGameManager;
+        public IGameManager myGameManager;
         private float timeForPlay;
 
         private void Awake()

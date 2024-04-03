@@ -54,12 +54,12 @@ namespace Groupe10
 			//        tempBoard.Add(tempPawn);
 			//    }
 			//}
-			foreach (IPawn pawn in GameManager.Instance.GetPawnsOnBoard(ECampType.PLAYER_ONE))
+			foreach (IPawn pawn in IAManager.Instance.myGameManager.GetPawnsOnBoard(ECampType.PLAYER_ONE))
 			{
                 TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), true, pawn.GetCurrentPosition());
                 tempBoard.Add(tempPawn);
             }
-            foreach (IPawn pawn in GameManager.Instance.GetPawnsOnBoard(ECampType.PLAYER_TWO))
+            foreach (IPawn pawn in IAManager.Instance.myGameManager.GetPawnsOnBoard(ECampType.PLAYER_TWO))
             {
                 TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), false, pawn.GetCurrentPosition());
                 tempBoard.Add(tempPawn);
@@ -87,12 +87,12 @@ namespace Groupe10
             //        diedBoard.Add(tempPawn);
             //    }
             //}
-            foreach (IPawn pawn in GameManager.Instance.GetReservePawnsByPlayer(ECampType.PLAYER_ONE))
+            foreach (IPawn pawn in IAManager.Instance.myGameManager.GetReservePawnsByPlayer(ECampType.PLAYER_ONE))
             {
                 TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), true, pawn.GetCurrentPosition());
                 tempBoard.Add(tempPawn);
             }
-            foreach (IPawn pawn in GameManager.Instance.GetReservePawnsByPlayer(ECampType.PLAYER_TWO))
+            foreach (IPawn pawn in IAManager.Instance.myGameManager.GetReservePawnsByPlayer(ECampType.PLAYER_TWO))
             {
                 TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), false, pawn.GetCurrentPosition());
                 tempBoard.Add(tempPawn);
