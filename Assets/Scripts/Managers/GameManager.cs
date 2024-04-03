@@ -349,12 +349,24 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public List<IPawn> GetReservePawnsByPlayer(ECampType campType)
     {
-        throw new System.NotImplementedException();
+        List<IPawn> pawnList = new List<IPawn>();
+        foreach (Selectable pawn in allPieces)
+        {
+            if(pawn.GetCurrentOwner().GetCamp() == campType && pawn.isDead)
+                pawnList.Add(pawn);
+        }
+        return pawnList;
     }
 
     public List<IPawn> GetPawnsOnBoard(ECampType campType)
     {
-        throw new System.NotImplementedException();
+        List<IPawn> pawnList = new List<IPawn>();
+        foreach (Selectable pawn in allPieces)
+        {
+            if (pawn.GetCurrentOwner().GetCamp() == campType && !pawn.isDead)
+                pawnList.Add(pawn);
+        }
+        return pawnList;
     }
 
     public SAction GetLastAction()
