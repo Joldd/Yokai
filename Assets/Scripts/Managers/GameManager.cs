@@ -1,9 +1,8 @@
-using System.Collections;
+using Groupe10;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 using YokaiNoMori.Enumeration;
 using YokaiNoMori.Interface;
 using YokaiNoMori.Struct;

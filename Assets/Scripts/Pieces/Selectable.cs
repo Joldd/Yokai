@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //using static UnityEditor.PlayerSettings;
 using YokaiNoMori.Interface;
 using YokaiNoMori.Enumeration;
+using Groupe10;
 
 public class Selectable : MonoBehaviour, IPawn
 {
