@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using UnityEngine.SocialPlatforms.Impl;
 using System.IO;
+using YokaiNoMori.Interface;
 using YokaiNoMori.Enumeration;
 
 namespace Groupe10
@@ -36,22 +37,32 @@ namespace Groupe10
         {
             //LIVING BOARD
             tempBoard.Clear();
-            foreach (Selectable pawn in GameManager.Instance.allPieces)
+			//foreach (Selectable pawn in GameManager.Instance.allPieces)
+			//{
+			//    if (pawn.transform.CompareTag("Player01") && !pawn.isDead)
+			//    {
+			//        TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos);
+			//        if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
+
+			//        tempBoard.Add(tempPawn);
+			//    }
+			//    else if (pawn.transform.CompareTag("Player02") && !pawn.isDead)
+			//    {
+			//        TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos);
+			//        if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
+
+			//        tempBoard.Add(tempPawn);
+			//    }
+			//}
+			foreach (IPawn pawn in GameManager.Instance.GetPawnsOnBoard(ECampType.PLAYER_ONE))
+			{
+                TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), true, pawn.GetCurrentPosition());
+                tempBoard.Add(tempPawn);
+            }
+            foreach (IPawn pawn in GameManager.Instance.GetPawnsOnBoard(ECampType.PLAYER_TWO))
             {
-                if (pawn.transform.CompareTag("Player01") && !pawn.isDead)
-                {
-                    TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos);
-                    if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
-
-                    tempBoard.Add(tempPawn);
-                }
-                else if (pawn.transform.CompareTag("Player02") && !pawn.isDead)
-                {
-                    TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos);
-                    if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
-
-                    tempBoard.Add(tempPawn);
-                }
+                TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), false, pawn.GetCurrentPosition());
+                tempBoard.Add(tempPawn);
             }
 
             foreach (TempPawn pawn in tempBoard)
@@ -61,25 +72,54 @@ namespace Groupe10
 
             //DIED BOARD
             diedBoard.Clear();
-            foreach (Selectable pawn in GameManager.Instance.allPieces)
+            //foreach (Selectable pawn in GameManager.Instance.allPieces)
+            //{
+            //    if (pawn.transform.CompareTag("Player01") && pawn.isDead)
+            //    {
+            //        TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos);
+            //        if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
+            //        diedBoard.Add(tempPawn);
+            //    }
+            //    else if (pawn.transform.CompareTag("Player02") && pawn.isDead)
+            //    {
+            //        TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos);
+            //        if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
+            //        diedBoard.Add(tempPawn);
+            //    }
+            //}
+            foreach (IPawn pawn in GameManager.Instance.GetReservePawnsByPlayer(ECampType.PLAYER_ONE))
             {
-                if (pawn.transform.CompareTag("Player01") && pawn.isDead)
-                {
-                    TempPawn tempPawn = new TempPawn(pawn.cardType, true, pawn.cellPos);
-                    if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
-                    diedBoard.Add(tempPawn);
-                }
-                else if (pawn.transform.CompareTag("Player02") && pawn.isDead)
-                {
-                    TempPawn tempPawn = new TempPawn(pawn.cardType, false, pawn.cellPos);
-                    if (tempPawn.pawnType == PawnType.KODAMA && (pawn as Kodama).isSamourai) tempPawn.pawnType = PawnType.SAMURAI;
-                    diedBoard.Add(tempPawn);
-                }
+                TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), true, pawn.GetCurrentPosition());
+                tempBoard.Add(tempPawn);
+            }
+            foreach (IPawn pawn in GameManager.Instance.GetReservePawnsByPlayer(ECampType.PLAYER_TWO))
+            {
+                TempPawn tempPawn = new TempPawn(GetPawnTypeFromEType(pawn.GetPawnType()), false, pawn.GetCurrentPosition());
+                tempBoard.Add(tempPawn);
             }
 
             int depth = maxDepth;
 
             int i = Minimax(depth, true, tempBoard, diedBoard, System.Int32.MinValue, System.Int32.MaxValue);
+        }
+
+        private PawnType GetPawnTypeFromEType(EPawnType type)
+        {
+            switch (type)
+            {
+                case EPawnType.Kodama:
+                    return PawnType.KODAMA;
+                case EPawnType.Kitsune:
+                    return PawnType.KITSUNE;
+                case EPawnType.Koropokkuru:
+                    return PawnType.KOROPOKKURU;
+                case EPawnType.KodamaSamurai:
+                    return PawnType.SAMURAI;
+                case EPawnType.Tanuki:
+                    return PawnType.TANUKI;
+                default:
+                    return PawnType.KODAMA;
+            }
         }
 
         private int Minimax(int depth, bool maximizingPlayer, List<TempPawn> temp, List<TempPawn> tempDie, int alpha, int beta)
