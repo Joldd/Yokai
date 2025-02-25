@@ -300,17 +300,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3855852906326368067, guid: be463bc4880dfaf47a97d013abcd1e37, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 5242043444774494012, guid: be463bc4880dfaf47a97d013abcd1e37, type: 3}
       propertyPath: m_Name
       value: Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6063514959317586511, guid: be463bc4880dfaf47a97d013abcd1e37, type: 3}
-      propertyPath: m_Color.a
-      value: 0.39215687
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -373,6 +365,18 @@ PrefabInstance:
     - target: {fileID: 846785445284082514, guid: 690f3f7f05fc2e342875761882da215f, type: 3}
       propertyPath: m_Name
       value: Grid
+      objectReference: {fileID: 0}
+    - target: {fileID: 6738504701169800814, guid: 690f3f7f05fc2e342875761882da215f, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.24705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 6738504701169800814, guid: 690f3f7f05fc2e342875761882da215f, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.82745105
+      objectReference: {fileID: 0}
+    - target: {fileID: 6738504701169800814, guid: 690f3f7f05fc2e342875761882da215f, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.7686275
       objectReference: {fileID: 0}
     - target: {fileID: 7041027008505626315, guid: 690f3f7f05fc2e342875761882da215f, type: 3}
       propertyPath: uiManager
